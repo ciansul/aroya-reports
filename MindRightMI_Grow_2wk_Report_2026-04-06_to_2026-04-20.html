@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mind Right MI — 2-Week Facility Report — 2026-04-20</title>
+<style>
+  :root {
+    --bg:#0c1222; --panel:#111936; --panel2:#17204a; --ink:#e8ecf5; --muted:#9fb0cc;
+    --ok:#2ecc71; --warn:#f6c85f; --bad:#ff6b6b; --crit:#d7263d; --info:#5ea9ff;
+    --line:#22305c;
+  }
+  * { box-sizing: border-box; }
+  html,body { margin:0; padding:0; background:var(--bg); color:var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Arial, sans-serif;
+    line-height:1.48; }
+  a { color: var(--info); }
+  header { padding: 28px 32px 18px; border-bottom:1px solid var(--line);
+    background: linear-gradient(180deg,#0f1837,#0c1222); }
+  header h1 { margin:0 0 4px; font-size: 26px; letter-spacing:.2px; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  main { padding: 22px 32px 80px; max-width: 1380px; margin: 0 auto; }
+  section { margin: 28px 0 34px; }
+  h2 { font-size: 18px; margin: 0 0 10px; letter-spacing:.3px; }
+  h3 { font-size: 15px; margin: 18px 0 8px; color:#cfd8ef; }
+  p { color:#d7dff0; margin: 6px 0 12px; }
+  .muted { color: var(--muted); }
+  .grid { display:grid; gap:14px; }
+  .cards { grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .card .big { font-size: 28px; font-weight: 700; letter-spacing:.5px; }
+  .card .lbl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing:.8px; }
+  table { width:100%; border-collapse: collapse; font-size: 13px; }
+  th,td { padding: 9px 10px; text-align:left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--panel2); color:#cfd8ef; font-weight:600; position: sticky; top: 0; }
+  tr:hover td { background:#101a38; }
+  .pill { display:inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight:600;
+    letter-spacing:.4px; }
+  .pill.ok { background: rgba(46,204,113,.16); color: var(--ok); }
+  .pill.warn { background: rgba(246,200,95,.18); color: var(--warn); }
+  .pill.bad { background: rgba(255,107,107,.18); color: var(--bad); }
+  .pill.crit { background: rgba(215,38,61,.22); color: #ffb3be; }
+  .pill.empty { background: rgba(159,176,204,.18); color: var(--muted); }
+  .pill.info { background: rgba(94,169,255,.18); color: var(--info); }
+  .box {
+    background: var(--panel); border-left: 3px solid var(--info); border-radius: 6px;
+    padding: 12px 16px; margin: 10px 0;
+  }
+  .box.warn { border-left-color: var(--warn); }
+  .box.bad { border-left-color: var(--crit); }
+  .box.ok { border-left-color: var(--ok); }
+  .two-col { display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 840px){ .two-col{ grid-template-columns: 1fr; } }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px;
+    background:#0f1631; padding: 2px 6px; border-radius: 4px; color:#c9d6f7; }
+  .small { font-size: 12px; color: var(--muted); }
+  .kv { display:grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: 13px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
+  ul.tight { margin: 6px 0 12px; padding-left: 22px; }
+  ul.tight li { margin: 2px 0; }
+  .focus { border-left: 3px solid var(--crit); background:#1a1030; padding: 14px 18px; border-radius: 8px; }
+  .focus.warn { border-left-color: var(--warn); background:#1a1a10; }
+  .ok-bar { color: var(--ok); }
+  .warn-bar { color: var(--warn); }
+  .bad-bar { color: var(--bad); }
+  .crit-bar { color: var(--crit); }
+  nav.toc { font-size: 13px; color: var(--muted); }
+  nav.toc a { color: #b8c7e9; text-decoration: none; margin-right: 14px; }
+  nav.toc a:hover { color: #fff; }
+  .meta-chip { display:inline-block; padding: 3px 9px; margin-right:6px; background: var(--panel2);
+    border-radius: 4px; color:#cfd8ef; font-size: 11px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Mind Right MI — Facility Health &amp; Cultivation Review</h1>
+  <div class="sub">Facility 4613 · Window: 2026-04-06 → 2026-04-20 (14d) · Prepared 2026-04-20</div>
+  <div class="sub" style="margin-top:6px">
+    <span class="meta-chip">Meeting topic: Irrigation strategy — 3-gal coco, 14–15d veg, dryback P2→P3</span>
+    <span class="meta-chip">4 flower rooms · 24 trays · substrate-only telemetry (no room climate)</span>
+  </div>
+  <nav class="toc" style="margin-top:12px">
+    <a href="#exec">Executive summary</a>
+    <a href="#topic">Today's topic</a>
+    <a href="#hot">Flower 4 &amp; hot zones</a>
+    <a href="#rooms">Room-by-room</a>
+    <a href="#devices">Device fleet</a>
+    <a href="#carryover">Carry-overs</a>
+    <a href="#methods">Methods &amp; caveats</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="exec">
+  <h2>Executive summary</h2>
+  <div class="grid cards">
+    <div class="card"><div class="lbl">Rooms sampled</div><div class="big">4</div>
+      <div class="small">Flower Rooms 1–4 (plus Office gateway, unscoped sink)</div></div>
+    <div class="card"><div class="lbl">Active production</div><div class="big">4</div>
+      <div class="small">All four flower rooms actively irrigating (VWC &gt; 30% across zones)</div></div>
+    <div class="card"><div class="lbl">Critical / Watch</div><div class="big warn-bar">1 / 2</div>
+      <div class="small">F4 substrate-temp excursion; F3 wet-with-rising-EC, F4 z3 EC stack</div></div>
+    <div class="card"><div class="lbl">Devices inventoried</div><div class="big">102</div>
+      <div class="small">48 TEROS-15 · 48 nodes · 4 repeaters · 1 gateway · 1 sink</div></div>
+  </div>
+
+  <div class="box warn">
+    <strong>What the team should care about this walk:</strong>
+    <ul class="tight">
+      <li><b>Flower Room 4 is running hot at the root.</b> 14-day substrate temp avg <b>80.5°F</b> (range 79.0–81.8°F) — that is <b>past the 77°F line where root function starts degrading</b> and past the 75°F line where uptake efficiency drops. Every zone in F4 is above 79.4°F. That is a room-level HVAC / under-tray heat problem, not a probe quirk.</li>
+      <li><b>F4 Tray 3 (zone 78059) is the acute zone in that room:</b> pore EC avg 5.23, current <b>5.76</b>, max 5.89, with VWC currently 65.7%. Wet + hot + stacking EC is the three-way stress triangle. Physical check on the drippers there is worth 10 minutes of the meeting.</li>
+      <li><b>Flower Room 3 Tray 4 (zone 78054) has stacked pore EC to 5.55 avg / 5.78 max</b> against a 4.64 room average. This is the hottest-salinity probe in the whole facility. Either the zone is drying faster than the program assumes, or the strain in that tray is a low-drinker.</li>
+      <li><b>Flower Room 3 is wet overall</b> (room VWC avg 59.3%, currently 66.8%) while pore EC is climbing. That's the classic &quot;we're irrigating through the dryback&quot; pattern — if the intent is generative, the irrigation program needs to be loosened so P2s pause longer.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <strong>What's healthy:</strong>
+    Mesh backbone is clean — zero ter15 probes showed data gaps &gt; 60 min on soil moisture across the 3-day telemetry pull, median sensor cadence is the expected 3 min. Fleet batteries are all Li-SOCl₂ baseline-healthy (p05 3.60–3.66 V, zero below the 3.0 V replace threshold). Flower Room 1 is the cleanest-looking run — substrate 70.5°F (dead center of the 65–75°F window), pore EC 3.26, VWC cycling 30.8→54.2% with good dryback amplitude.
+  </div>
+</section>
+
+<section id="topic">
+  <h2>Today's topic — irrigation for 3-gal coco, 14–15d veg, dryback P2→P3</h2>
+  <p>
+    3-gal coco with a 14–15 day veg puts you at a very specific size/volume ratio going into
+    flip: a moderately-sized plant that can drink but has lots of substrate to carry. That
+    changes what P2 and P3 should look like compared with the smaller-pot, shorter-veg
+    programs most crop-steering recipes are tuned against.
+  </p>
+
+  <h3>How P2 and P3 should behave in a 3-gal coco block</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="lbl">P2 — maintenance irrigation (daylight middle)</div>
+      <ul class="tight">
+        <li>Shots are <b>maintenance-only</b>: replace what the plant drank, keep VWC inside a ~5% band.</li>
+        <li>Event size 2–4% of substrate volume; frequency driven by drinking rate, not a fixed clock.</li>
+        <li>In 3-gal coco, plants take longer to re-saturate between events than a 1-gal — <b>fewer, slightly larger P2 shots usually win over more, smaller ones</b>.</li>
+        <li>Target zero runoff in P2 — P2 runoff means you're already into P1 territory.</li>
+        <li>On the graph: flat-ish VWC line with small sawtooth, pore EC stable.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="lbl">P3 — pre-overnight dryback window</div>
+      <ul class="tight">
+        <li>Last P2 of the day ends 4–6 hours before lights-off (3-gal is the long end of this — it dries slower).</li>
+        <li>Dryback target set by phase:
+          <br>· Early flower (wk 1–2): 15–20%
+          <br>· Mid bulking (wk 3–5): 20–30%
+          <br>· Late flower / ripening: 25–40%</li>
+        <li>Dryback is measured <b>as the graph drops</b> — a programmed P3 that never lands below 45% isn't a dryback, it's a declaration.</li>
+        <li>Pore EC should rise during P3 (water leaving, salts staying). If EC doesn't climb overnight, the plant isn't drinking — substrate temp, root zone pH, or plant stress is the first place to look.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>What the current data says about each room's dryback</h3>
+  <table>
+    <thead>
+      <tr><th>Room</th><th>VWC min → max</th><th>Dryback amplitude</th><th>Substrate temp</th><th>Read</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Flower 1</b></td>
+        <td>30.8% → 54.2%</td>
+        <td><span class="pill ok">~23 pts</span></td>
+        <td>70.5°F avg</td>
+        <td>Textbook. The curve has room — dryback is landing below 35%. Any phase is viable here.</td></tr>
+      <tr><td><b>Flower 2</b></td>
+        <td>36.3% → 54.3%</td>
+        <td><span class="pill ok">~18 pts</span></td>
+        <td>75.3°F avg</td>
+        <td>A shade wet at the bottom of the cycle. For mid-bulking this is fine; for late flower you'd want the dryback to push 5 pts lower.</td></tr>
+      <tr><td><b>Flower 3</b></td>
+        <td>44.7% → 67.8%</td>
+        <td><span class="pill warn">~23 pts but floor is high</span></td>
+        <td>76.6°F avg</td>
+        <td>Amplitude is fine, but VWC floor of 45% means P3 is ending too early — the program is re-irrigating before the plant has pulled down. Explains the rising pore EC (water coming in, salts staying). Push P3 another 2–3 hr.</td></tr>
+      <tr><td><b>Flower 4</b></td>
+        <td>38.5% → 63.2%</td>
+        <td><span class="pill warn">~25 pts</span></td>
+        <td><b>80.5°F avg</b></td>
+        <td>Amplitude looks right. The problem here isn't irrigation — it's the <b>substrate temperature</b>. At 80°F the plant drinks differently (faster water but slower nutrient uptake), so dryback-driven steering will give you misleading reads until the HVAC / root-zone temp is addressed.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>What to watch in the first 72 hours after any program change</h3>
+  <ul class="tight">
+    <li><b>Dryback floor.</b> Does VWC drop below 35% before first P1? If no, extend P3 by 60-minute steps until it does.</li>
+    <li><b>Overnight EC slope.</b> Rising ~0.2–0.5 per night is healthy in a bulking phase. Flat = not drinking. Jumping &gt; 1.0 = either a recipe change landed or the plant is in stress.</li>
+    <li><b>Field capacity after P1.</b> First shot of the morning should restore to the previous morning's high, not overshoot it. Chasing field capacity upward day over day means you're over-irrigating.</li>
+    <li><b>Substrate temp.</b> Every 5°F above 75°F makes this whole feedback loop fuzzier. In F4 specifically, don't change irrigation until the temp is back under 77°F — you'll be tuning against a broken signal.</li>
+  </ul>
+</section>
+
+<section id="hot">
+  <h2 style="color:#ffd58a">Flower Room 4 &amp; hot zones — what needs attention first</h2>
+  <div class="focus warn">
+    <p><b>Flower Room 4 — substrate-temp excursion (14d window):</b></p>
+    <div class="kv">
+      <dt>Substrate temp (room)</dt><dd>avg <b>80.5°F</b> · min 79.0 · max 81.8 · current 80.5 — target 65–75°F, red line 77°F</dd>
+      <dt>Per-zone temp</dt><dd>every zone 79.4–81.3°F avg; F4 Tray 6 (78062) hottest at 81.0°F avg</dd>
+      <dt>Pore EC (room)</dt><dd>avg 4.33 · current 4.55 · zone 78059 at <b>5.23 avg / 5.76 current</b></dd>
+      <dt>VWC (room)</dt><dd>avg 52.0% · range 38.5–63.2% · current 62.5% — dryback is happening but from a wet baseline</dd>
+    </div>
+    <p><b>Read:</b> F4 is the only room in the facility where substrate temperature is outside the AROYA target band <i>every zone, every hour</i> of the 14-day window. At 80°F root temperature, the plant's stomatal behavior changes — it transpires faster but absorbs nutrients slower. That's why the one zone (78059) is stacking EC past 5.7 dS/m while VWC is still 66%: water leaving, salts staying, drinking compromised. This reads like a room-level heat-load problem (HVAC under-sized, lights too close, or return-air path failing) rather than an irrigation tuning question.</p>
+    <p><b>Triage — before the meeting ends:</b></p>
+    <ul class="tight">
+      <li>Walk F4 Tray 3 (zone 78059). Check dripper condition and whether the probe is actually in the expected root zone — 5.76 dS/m is hot enough to be either real stacking or a probe working a dry pocket.</li>
+      <li>Note the F4 air-handler setpoint and return-air temp (not in AROYA here — this is on the Argus / HVAC side). If the HVAC is reporting 74°F air while substrate is at 80°F, the discrepancy is tank heating, lamp radiative load, or a chilled-water issue, not an air-temp problem.</li>
+      <li>If 80°F substrate has been the steady state for several cycles, that is a <b>design</b> fix, not a <b>tune</b> fix — document it for the capex conversation.</li>
+      <li>Hold the irrigation dial steady on F4 until the temp comes down — any changes you make now are tuning against a broken signal.</li>
+    </ul>
+  </div>
+
+  <h3>Other zones to physically inspect</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="lbl">F3 Tray 4 — zone 78054</div>
+      <div class="kv">
+        <dt>Pore EC</dt><dd><b>5.55 avg · 5.78 max · 5.59 current</b></dd>
+        <dt>Room average EC</dt><dd>4.64</dd>
+        <dt>VWC</dt><dd>68.7% current — on the wet side</dd>
+        <dt>Substrate temp</dt><dd>76.8°F (room 76.6°F — in line)</dd>
+      </div>
+      <p class="small">Highest-salinity probe in the facility. Could be a low-drinker strain, a stuck dripper on that tray (under-feeding the plant while the sensor sits in a pocket of concentrated substrate), or a probe that's drifted. Confirm visually before tuning.</p>
+    </div>
+    <div class="card">
+      <div class="lbl">F4 Tray 3 — zone 78059</div>
+      <div class="kv">
+        <dt>Pore EC</dt><dd><b>5.23 avg · 5.89 max · 5.76 current</b></dd>
+        <dt>Room average EC</dt><dd>4.33</dd>
+        <dt>VWC</dt><dd>65.7% current — still wet</dd>
+        <dt>Substrate temp</dt><dd>80.7°F (matches F4 pattern)</dd>
+      </div>
+      <p class="small">Compound case — this probe is hot in a room that's already hot. The stacking is consistent with 80°F substrate temp killing uptake. Don't touch the zone's irrigation until F4's root temp is back in band.</p>
+    </div>
+  </div>
+</section>
+
+<section id="rooms">
+  <h2>Room-by-room status</h2>
+  <p class="small">14-day (336h) per-zone stats pulled from the AROYA MCP. Phase is inferred from VWC / substrate-temp / pore-EC patterns — no harvest-group endpoint is exposed on the AROYA public API for this token, so phase is best-effort and should be cross-checked with the operator's HG records. No air-temp / VPD / CO₂ / RH columns — this facility has substrate probes only; see Methods.</p>
+  <table>
+    <thead><tr>
+      <th>Room</th><th>Phase (inferred)</th><th>VWC room avg (range)</th><th>Substrate temp</th>
+      <th>Pore EC room avg (zone max)</th><th>Status</th><th>Notes</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><b>Flower Room 1</b> (19105)<br><span class="small">6 trays / 12 probes</span></td>
+        <td>Early–mid flower, clean dryback</td>
+        <td>43.0% (30.8–54.2)</td>
+        <td>70.5°F avg · max 73.0°F</td>
+        <td>3.26 (zone 78043 = 3.80)</td>
+        <td><span class="pill ok">OK</span></td>
+        <td>Dead-center on every metric. Substrate temp in the middle of target. Dryback amplitude is real. Nothing to touch.</td></tr>
+      <tr><td><b>Flower Room 2</b> (19108)<br><span class="small">6 trays / 12 probes</span></td>
+        <td>Mid flower bulking</td>
+        <td>48.1% (36.3–54.3)</td>
+        <td>75.3°F avg · max 77.1°F</td>
+        <td>3.91 (zone 78046 = 4.25)</td>
+        <td><span class="pill ok">OK</span></td>
+        <td>Slightly warm substrate but still inside the 73–77°F bulking band. EC is phase-appropriate. F2 had the most device-telemetry fetch errors in the fleet pull (10/25) — worth flagging as a possible mesh-relay issue to revisit, separate from the cultivation picture.</td></tr>
+      <tr><td><b>Flower Room 3</b> (19109)<br><span class="small">6 trays / 12 probes</span></td>
+        <td>Wet / early–mid flower, climbing EC</td>
+        <td><b>59.3%</b> (44.7–67.8)</td>
+        <td>76.6°F avg · max 78.8°F</td>
+        <td><b>4.64</b> (zone 78054 = 5.55)</td>
+        <td><span class="pill warn">WATCH</span></td>
+        <td>Room is wet across the 14-day window and pore EC is the highest of the three cooler rooms. Dryback is happening but the floor is 45%, which is too high — P3 is ending before the plant has drawn down. Extending P3 2–3 hr is the first lever; Tray 4 (78054) needs a physical inspection either way.</td></tr>
+      <tr><td><b>Flower Room 4</b> (19110)<br><span class="small">6 trays / 12 probes</span></td>
+        <td>Mid–late flower, thermal stress</td>
+        <td>52.0% (38.5–63.2)</td>
+        <td><b>80.5°F avg · max 81.8°F</b></td>
+        <td>4.33 (zone 78059 = 5.23)</td>
+        <td><span class="pill bad">ISSUE</span></td>
+        <td>See Flower 4 section. Substrate temp excursion is room-wide, every zone above 79°F. This is an HVAC / thermal design question, not an irrigation question. Tray 3 (78059) is also the compounding EC stack. Don't tune irrigation until the root temp is back in band.</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Temperature gradient across the facility — F1 (70.5°F) → F2 (75.3°F) → F3 (76.6°F) → F4 (80.5°F) — suggests a consistent trend, possibly layout-related (room position relative to air handlers, ducting length, or lamp density). Worth a conversation about the physical air-delivery setup even though F1–F3 are still acceptable.</p>
+</section>
+
+<section id="devices">
+  <h2>Device fleet health</h2>
+  <p>
+    Full telemetry pulled for all 102 devices via <code>/devices/{id}/chart/</code> over a
+    72-hour window (4/17 → 4/20 UTC). Aggregated to per-device battery voltage, radio signal
+    (RSSI), link-quality, travel time, and gap analysis on the substrate-moisture stream.
+  </p>
+
+  <div class="grid cards">
+    <div class="card"><div class="lbl">Total devices</div><div class="big">102</div></div>
+    <div class="card"><div class="lbl">TEROS-15 probes</div><div class="big">48</div>
+      <div class="small">3-min native cadence — 12 per flower room, 2 per tray</div></div>
+    <div class="card"><div class="lbl">Mesh nodes</div><div class="big">48</div>
+      <div class="small">Li-SOCl₂ cell · all p05 3.60–3.66 V (baseline healthy)</div></div>
+    <div class="card"><div class="lbl">Repeaters</div><div class="big">4</div>
+      <div class="small">One per flower room (F1–F4)</div></div>
+    <div class="card"><div class="lbl">Gateway / Sink</div><div class="big">1 / 1</div>
+      <div class="small">Gateway in Office (19106); sink unscoped</div></div>
+    <div class="card"><div class="lbl">Climate sensors</div><div class="big">0</div>
+      <div class="small">No H421 / EE894 at this facility — see caveats</div></div>
+  </div>
+
+  <div class="box ok">
+    <b>Battery:</b> 52 devices reporting voltage; <b>zero below the 3.0 V replace threshold</b>.
+    p05 distribution 3.598–3.658 V (median 3.614). This is Li-SOCl₂ shelf-voltage territory
+    — the fleet is effectively brand-new from a battery standpoint.
+  </div>
+
+  <div class="box ok">
+    <b>Signal &amp; mesh:</b> 29 devices reporting RSSI; <b>zero weak (&lt;-90 dBm)</b>,
+    19 excellent (≥-70), 10 fair (-90 to -80). The weakest node is F2's repeater
+    (serial H3400003155, p05 -87 dBm, link-quality p05 52) which is the only radio asset
+    worth keeping an eye on — still operable, just the least-robust link in the fleet.
+    Data-gap scan on ter15 soil-moisture: <b>zero probes with &gt;60 min gap</b> across the
+    72h pull; median interval is the expected 3 min. Mesh backbone is healthy.
+  </div>
+
+  <div class="box warn">
+    <b>Flower Room 2 dropout cluster:</b> During the 3-day chart pull, 10 of the 25 devices
+    in F2 returned partial chunk errors (4 nodes + 6 ter15), vs. 7/25 in F4, 2/25 in F3, and
+    0/25 in F1. That's concentrated enough to point at either the F2 repeater (H3400003155 —
+    the weakest-RSSI radio in the fleet) or intermittent upstream throughput on that room's
+    relay path. This didn't produce visible gaps in the stored per-zone data (the 14-day
+    soil_moist series is clean), so it's a pull-time artifact, but worth noting as the next
+    place to look if dashboard gaps appear in F2.
+  </div>
+
+  <div class="box">
+    <b>Serial convention reminder:</b> When referencing individual devices with the grower,
+    cite only the repeater serial (the <code>H</code>-prefix string). The atm14 / sensor-head
+    serial — the one that shows up with a <code>-ter15</code> or <code>-2</code> suffix in
+    the API — is internal and causes confusion if surfaced directly. For zone 78059's probe
+    pair, that means referencing <code>H3440012184</code>, not <code>H3440012184-ter15</code>
+    or <code>H3440012184-2</code>.
+  </div>
+</section>
+
+<section id="carryover">
+  <h2>Carry-overs &amp; prior-session context</h2>
+  <p class="small">
+    Flagging items from prior conversations with the Mind Right team (held in session memory,
+    not re-verified against the facility's own records in this pull). Please correct any
+    that have moved.
+  </p>
+  <ul class="tight">
+    <li><b>Pre-pull search:</b> no specific Mind Right / Joseph Brennan meeting recordings
+      were located in the connected Google Drive or Notion workspaces during this session's
+      scan — if there are recordings in a different account or workspace not yet connected,
+      point me at them and I'll re-pull.</li>
+    <li><b>No harvest-group records:</b> every phase assignment in this report is inferred
+      from sensor behavior. Cross-checking phase against the operator's actual flip dates
+      / strain assignments is the single biggest quality lift available to this report.</li>
+    <li><b>F4 substrate-temp history:</b> if this has been the steady-state for prior cycles
+      (not just this one), it's a capex / design conversation rather than a runtime fix.
+      Worth pulling the historical substrate-temp log for F4 across the last 3–4 harvests
+      to confirm before the meeting.</li>
+    <li><b>Argus / AROYA cross-check:</b> since AROYA has no air-temp or VPD sensor at this
+      facility, any room-climate conversation needs to pair the substrate telemetry here
+      with what the Argus side is reporting. Worth asking the team whether they want us to
+      propose installing AROYA climate sensors to close the loop on VPD-driven steering.</li>
+  </ul>
+</section>
+
+<section id="methods">
+  <h2>Methods &amp; caveats</h2>
+  <div class="two-col">
+    <div>
+      <h3>Data sources</h3>
+      <ul class="tight">
+        <li>AROYA MCP — <code>list_rooms</code> (facility topology), <code>get_room_stats</code>
+          (14d / 336h per-zone soil_moist / soil_temp / pore_ec for F1–F4).</li>
+        <li>AROYA public API — <code>/devices/?facility=4613&amp;page_size=200</code>
+          (paginated via integer <code>next</code>), then <code>/devices/{id}/chart/</code>
+          per-device for battery / signal / link-quality / travel-time over a 72h window.
+          Raw results saved to <code>clients/mindright/data/device_health_summary_4613.json</code>.</li>
+        <li>Pull script at <code>clients/mindright/scripts/pull_devices.py</code> (same shape as the Vangarden
+          patched script, 10 workers, 3-retry exponential backoff on 429).</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What this report does NOT contain</h3>
+      <ul class="tight">
+        <li><b>Air temperature · VPD · CO₂ · RH.</b> This facility has no H421 (room climate) or
+          EE894 (CO₂) sensors installed — only ter15 substrate probes + nodes. Anything
+          VPD-driven has to come from the Argus side.</li>
+        <li><b>Harvest-group / flip-date records.</b> AROYA public API does not expose
+          <code>/harvest-groups/</code> at this token's scope (endpoint returns 404). Phase
+          assignments are inferred from sensor behavior, not operator records.</li>
+        <li><b>Day / night split.</b> 14d per-zone stats are period averages, not
+          photoperiod-split. Dryback conversations in the report use min/max ranges as a
+          proxy for the dryback window, which is directionally correct but not exact —
+          the proper view needs a lights-on vs lights-off split that isn't exposed in
+          the room-stats endpoint.</li>
+        <li><b>Meeting recordings / attendee notes.</b> Connected Google Drive and Notion
+          searches during this session did not surface Mind Right specific recordings
+          or meeting notes. If they live in a different account / workspace, point me at
+          it and I'll re-incorporate.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Targets used for phase scoring</h3>
+  <p class="small">Per the AROYA crop-steering target tables (LED cultivation, coco substrate).
+    Early flower: dryback 15–25% · pore EC 3.0–6.0 dS/m rising by phase.
+    Mid bulking: dryback 20–30% · EC 5.0–7.0 step-down to 5.0–6.5.
+    Late flower: dryback 25–35% · EC 5.5–7.0.
+    Ripening: dryback 30–45% · EC 6.0–8.0 (or 3–5 if flushing).
+    Substrate temp 65–75°F all phases — 75°F is where uptake starts degrading, 77°F is the red line.
+    3-gal-specific adjustments: longer P3 window (4–6 hr pre-off vs 3–4 hr for 1-gal),
+    fewer but slightly larger P2s, slower dryback slope expected.
+  </p>
+</section>
+
+<p class="small" style="margin-top:40px">
+  Generated 2026-04-20 · Facility 4613 (Mind Right MI) · Sensor data via AROYA public_api
+  and AROYA MCP — see &quot;Methods &amp; caveats&quot; for honest limitations in this run.
+</p>
+
+</main>
+</body>
+</html>
