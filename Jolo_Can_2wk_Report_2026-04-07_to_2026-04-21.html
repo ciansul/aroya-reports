@@ -506,6 +506,64 @@ body.theme-dark .zone.bad::before  { background: var(--error-fg); }
 .zone__verdict.warn { background: var(--warning-bg); color: var(--warning-fg); border-color: var(--warning-border); }
 .zone__verdict.bad  { background: var(--error-bg);   color: var(--error-fg);   border-color: var(--error-border); }
 
+/* DAILY METRIC SPARKLINES — Tableau-minimal, AROYA-tokenized */
+.mchart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+@media (min-width: 900px) { .mchart-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.mchart {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--s-2) var(--s-3) calc(var(--s-2) - 2px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.mchart__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: var(--s-2);
+}
+.mchart__title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--fg-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mchart__val {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--fg);
+  white-space: nowrap;
+}
+.mchart__val.ok   { color: var(--success-fg); }
+.mchart__val.warn { color: var(--warning-fg); }
+.mchart__val.bad  { color: var(--error-fg); }
+.mchart__val.na   { color: var(--fg-subtle); }
+.mchart__foot {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 10px;
+  color: var(--fg-subtle);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.mchart__band { letter-spacing: 0.02em; }
+.mchart__n    { opacity: 0.7; }
+.mchart__nodata {
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+  text-align: center;
+  padding: var(--s-3) 0;
+}
+
 /* FINDINGS */
 .findings { display: flex; flex-direction: column; gap: var(--s-3); }
 .finding {
@@ -681,9 +739,9 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <p class="hero__eyebrow"><span lang="en">Facility 3364 · Jolo Can LLC · Harbor House</span><span lang="es">Instalación 3364 · Jolo Can LLC · Harbor House</span></p>
     <h1 class="hero__title">
       <span lang="en">10 flower rooms online. <em>Root zones run hot</em> across the facility, and <em>humidity sits above bulking targets</em> in the top 4 rooms.</span>
-      <span lang="es">10 salas de floración en línea. <em>Las zonas radiculares están calientes</em> en toda la instalación, y <em>la humedad se mantiene sobre los objetivos de engorde</em> en las 4 salas principales.</span>
+      <span lang="es">10 cuartos de floración en línea. <em>Las zonas radiculares están calientes</em> en toda la instalación, y <em>la humedad se mantiene sobre los objetivos de engorde</em> en los 4 cuartos principales.</span>
     </h1>
-    <p class="hero__subtitle"><span lang="en">2-week facility report · 7 Apr – 21 Apr 2026 · 385 devices · 19 rooms · 10 active flower</span><span lang="es">Reporte quincenal · 7 Abr – 21 Abr 2026 · 385 dispositivos · 19 salas · 10 floración activas</span></p>
+    <p class="hero__subtitle"><span lang="en">2-week facility report · 7 Apr – 21 Apr 2026 · 385 devices · 19 rooms · 10 active flower</span><span lang="es">Reporte quincenal · 7 Abr – 21 Abr 2026 · 385 dispositivos · 19 cuartos · 10 floración activos</span></p>
     <div class="hero__meta">
       <span><span lang="en">Prepared for the Harbor House cultivation team</span><span lang="es">Preparado para el equipo de cultivo de Harbor House</span></span>
       <span>·</span>
@@ -692,10 +750,10 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <span><span lang="en">21 April 2026</span><span lang="es">21 de abril de 2026</span></span>
     </div>
     <div class="hero__chips">
-      <span class="hero__chip brand"><span lang="en">10 flower rooms live</span><span lang="es">10 salas de floración activas</span></span>
+      <span class="hero__chip brand"><span lang="en">10 flower rooms live</span><span lang="es">10 cuartos de floración activos</span></span>
       <span class="hero__chip brand"><span lang="en">46% avg target adherence</span><span lang="es">46% adherencia promedio</span></span>
-      <span class="hero__chip warn"><span lang="en">4 rooms above root-zone ceiling</span><span lang="es">4 salas sobre el límite de zona radicular</span></span>
-      <span class="hero__chip bad"><span lang="en">4 rooms with ≥2 critical flags</span><span lang="es">4 salas con ≥2 alertas críticas</span></span>
+      <span class="hero__chip warn"><span lang="en">4 rooms above root-zone ceiling</span><span lang="es">4 cuartos sobre el límite de zona radicular</span></span>
+      <span class="hero__chip bad"><span lang="en">4 rooms with ≥2 critical flags</span><span lang="es">4 cuartos con ≥2 alertas críticas</span></span>
     </div>
   </div>
 </header>
@@ -710,14 +768,14 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <p class="exec__label"><span lang="en">Executive summary</span><span lang="es">Resumen ejecutivo</span></p>
       <p>
         <span lang="en">Across 10 active flower rooms at Jolo Can, the 2-week window ending 21 Apr 2026 shows a facility where climate hardware is reporting cleanly — all rooms have full TEROS-15 + ATMOS-14 coverage — but where <em class="flag">substrate temperatures run warm facility-wide (median 77.0 °F with Flower 6 and Flower 8 above 80 °F)</em>, <em class="flag">relative humidity drifts 5 – 10 points above the mid-flower 55 – 65 % target in the hotter rooms</em>, and <em class="flag">pore EC sits below the 6 – 8 mS/cm bulking band in 6 of 10 rooms</em>. VPD is the facility's strongest performer — sitting in or near the bulking band of 1.0 – 1.2 kPa across the board. Dryback behavior is healthy (median 17 – 32 % across rooms) with no runaway zones. Flower 5 stands out with a 93 %-peak VWC reading that warrants a zone-level recheck. Full breakdown and recommendations below.</span>
-        <span lang="es">En las 10 salas de floración activas de Jolo Can, la ventana de 2 semanas terminando el 21 de abril de 2026 muestra una instalación donde el hardware de clima está reportando limpiamente — todas las salas tienen cobertura completa de TEROS-15 + ATMOS-14 — pero donde <em class="flag">las temperaturas del sustrato corren cálidas en toda la instalación (mediana 77.0 °F con Flower 6 y Flower 8 sobre 80 °F)</em>, <em class="flag">la humedad relativa se aleja 5 – 10 puntos sobre el objetivo de floración media de 55 – 65 % en las salas más calientes</em>, y <em class="flag">la CE de poro se mantiene por debajo de la banda de engorde 6 – 8 mS/cm en 6 de 10 salas</em>. El VPD es el indicador más fuerte de la instalación — ubicándose dentro o cerca de la banda de engorde 1.0 – 1.2 kPa en todas las salas. El comportamiento del dryback es saludable (mediana 17 – 32 % por sala) sin zonas descontroladas. Flower 5 destaca con una lectura de pico de VWC del 93 % que amerita una revisión a nivel de zona. Desglose completo y recomendaciones abajo.</span>
+        <span lang="es">En los 10 cuartos de floración activos de Jolo Can, la ventana de 2 semanas terminando el 21 de abril de 2026 muestra una instalación donde el hardware de clima está reportando limpiamente — todos los cuartos tienen cobertura completa de TEROS-15 + ATMOS-14 — pero donde <em class="flag">las temperaturas del sustrato corren cálidas en toda la instalación (mediana 77.0 °F con Flower 6 y Flower 8 sobre 80 °F)</em>, <em class="flag">la humedad relativa se aleja 5 – 10 puntos sobre el objetivo de floración media de 55 – 65 % en los cuartos más calientes</em>, y <em class="flag">la CE de poro se mantiene por debajo de la banda de engorde 6 – 8 mS/cm en 6 de 10 cuartos</em>. El VPD es el indicador más fuerte de la instalación — ubicándose dentro o cerca de la banda de engorde 1.0 – 1.2 kPa en todos los cuartos. El comportamiento del dryback es saludable (mediana 17 – 32 % por cuarto) sin zonas descontroladas. Flower 5 destaca con una lectura de pico de VWC del 93 % que amerita una revisión a nivel de zona. Desglose completo y recomendaciones abajo.</span>
       </p>
     </div>
   </div>
 
   <!-- KPI SNAPSHOT -->
   <h2 class="h1"><span lang="en">Facility snapshot — 14-day window</span><span lang="es">Instantánea de instalación — ventana de 14 días</span></h2>
-  <p class="eyebrow"><span lang="en">Averaged across 10 flower rooms · 2-week window 7 Apr → 21 Apr 2026</span><span lang="es">Promediado en 10 salas de floración · ventana 2 semanas 7 Abr → 21 Abr 2026</span></p>
+  <p class="eyebrow"><span lang="en">Averaged across 10 flower rooms · 2-week window 7 Apr → 21 Apr 2026</span><span lang="es">Promediado en 10 cuartos de floración · ventana 2 semanas 7 Abr → 21 Abr 2026</span></p>
 
   <div class="kpi-grid">
 
@@ -742,7 +800,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="kpi__value">64.2<span class="kpi__unit">%</span></div>
       <div class="kpi__range"><span lang="en">Min 53.8 · Max 72.2</span><span lang="es">Mín 53.8 · Máx 72.2</span></div>
       <div class="kpi__bar"><div class="kpi__bar-fill warn" style="left:55%;right:10%"></div></div>
-      <div class="kpi__delta warn"><span lang="en">4 rooms above 67 %</span><span lang="es">4 salas sobre 67 %</span></div>
+      <div class="kpi__delta warn"><span lang="en">4 rooms above 67 %</span><span lang="es">4 cuartos sobre 67 %</span></div>
     </div>
 
     <div class="kpi substrate bad">
@@ -750,7 +808,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="kpi__value">76.5<span class="kpi__unit">°F</span></div>
       <div class="kpi__range"><span lang="en">Min 71.6 · Max 81.2</span><span lang="es">Mín 71.6 · Máx 81.2</span></div>
       <div class="kpi__bar"><div class="kpi__bar-fill bad" style="left:58%;right:5%"></div></div>
-      <div class="kpi__delta bad"><span lang="en">Above 75 °F ceiling in 7 of 10 rooms</span><span lang="es">Sobre límite 75 °F en 7 de 10 salas</span></div>
+      <div class="kpi__delta bad"><span lang="en">Above 75 °F ceiling in 7 of 10 rooms</span><span lang="es">Sobre límite 75 °F en 7 de 10 cuartos</span></div>
     </div>
 
     <div class="kpi substrate warn">
@@ -758,7 +816,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="kpi__value">5.02<span class="kpi__unit">mS/cm</span></div>
       <div class="kpi__range"><span lang="en">Min 3.33 · Max 6.68</span><span lang="es">Mín 3.33 · Máx 6.68</span></div>
       <div class="kpi__bar"><div class="kpi__bar-fill warn" style="left:25%;right:45%"></div></div>
-      <div class="kpi__delta warn"><span lang="en">Below 6 dS/m bulking target in 6 rooms</span><span lang="es">Debajo del objetivo 6 dS/m en 6 salas</span></div>
+      <div class="kpi__delta warn"><span lang="en">Below 6 dS/m bulking target in 6 rooms</span><span lang="es">Debajo del objetivo 6 dS/m en 6 cuartos</span></div>
     </div>
 
     <div class="kpi substrate">
@@ -788,7 +846,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
   </div>
 
   <!-- ROOM COMPARISON TABLE -->
-  <h2 class="h1"><span lang="en">Room-by-room scorecard</span><span lang="es">Tarjeta por sala</span></h2>
+  <h2 class="h1"><span lang="en">Room-by-room scorecard</span><span lang="es">Tarjeta por cuarto</span></h2>
   <p class="eyebrow"><span lang="en">Scored against AROYA mid-flower crop-steering targets</span><span lang="es">Evaluada contra objetivos de crop-steering de floración media de AROYA</span></p>
 
   <section class="card">
@@ -796,7 +854,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <table class="data-table">
         <thead>
           <tr>
-            <th><span lang="en">Room</span><span lang="es">Sala</span></th>
+            <th><span lang="en">Room</span><span lang="es">Cuarto</span></th>
             <th class="num"><span lang="en">Adherence</span><span lang="es">Adherencia</span></th>
             <th class="num"><span lang="en">Air °F</span><span lang="es">Aire °F</span></th>
             <th class="num"><span lang="en">VPD kPa</span><span lang="es">VPD kPa</span></th>
@@ -935,14 +993,14 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
   </section>
 
   <!-- PER-ROOM ZONE CARDS -->
-  <h2 class="h1"><span lang="en">Per-room zone breakdown</span><span lang="es">Desglose por sala</span></h2>
-  <p class="eyebrow"><span lang="en">Each card shows all sensor zones in that flower room · hover for detail</span><span lang="es">Cada tarjeta muestra todas las zonas de la sala · pasar el cursor para detalle</span></p>
+  <h2 class="h1"><span lang="en">Per-room zone breakdown</span><span lang="es">Desglose por cuarto</span></h2>
+  <p class="eyebrow"><span lang="en">Each card lists every sensor zone in that flower room with its 14-day VWC, EC, dryback, and target-band status</span><span lang="es">Cada tarjeta lista todas las zonas sensoras del cuarto con su VWC, CE, dryback y estado vs. banda objetivo de 14 días</span></p>
 
   <section class="card">
     <header class="card__head">
       <div>
         <p class="card__title">Flower 0</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9281 · 4 substrate zones</span><span lang="es">ID de sala 9281 · 4 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">4 substrate zones</span><span lang="es">4 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 57 %</span><span lang="es">Adherencia 57 %</span></span>
     </header>
@@ -950,7 +1008,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>79.1 °F · 0.94 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>72.1 % · 17.6 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>79.1 °F · 6.68</b></div>
@@ -959,7 +1017,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35650</span><span lang="es">Zona 35650</span></h4><span class="id">id 35650</span></div>
+          <div class="zone__head"><h4>Zone 1 (F0)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>33.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>20.5 – 56.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>6.73 · pk 9.17</b></div>
@@ -968,7 +1026,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 49028</span><span lang="es">Zona 49028</span></h4><span class="id">id 49028</span></div>
+          <div class="zone__head"><h4>Zone 2 (F0)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>32.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>20.4 – 51.5</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>7.40 · pk 11.43</b></div>
@@ -977,7 +1035,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 49029</span><span lang="es">Zona 49029</span></h4><span class="id">id 49029</span></div>
+          <div class="zone__head"><h4>Zone 3 (F0)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>38.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>22.4 – 58.2</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>7.38 · pk 11.87</b></div>
@@ -986,7 +1044,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 49030</span><span lang="es">Zona 49030</span></h4><span class="id">id 49030</span></div>
+          <div class="zone__head"><h4>Zone 4 (F0)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>37.1 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>24.6 – 63.0</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.21 · pk 7.39</b></div>
@@ -1001,7 +1059,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 1</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9272 · 7 substrate zones</span><span lang="es">ID de sala 9272 · 7 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">7 substrate zones</span><span lang="es">7 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 43 %</span><span lang="es">Adherencia 43 %</span></span>
     </header>
@@ -1009,7 +1067,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>74.3 °F · 1.33 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>53.8 % · 11.6 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>72.1 °F · 4.85</b></div>
@@ -1018,7 +1076,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35599</span><span lang="es">Zona 35599</span></h4><span class="id">id 35599</span></div>
+          <div class="zone__head"><h4>Zone 1 (F1)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>40.4 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>29.5 – 51.9</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.87 · pk 6.97</b></div>
@@ -1027,7 +1085,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35600</span><span lang="es">Zona 35600</span></h4><span class="id">id 35600</span></div>
+          <div class="zone__head"><h4>Zone 2 (F1)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>41.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>32.4 – 51.5</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.24 · pk 6.16</b></div>
@@ -1036,7 +1094,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35601</span><span lang="es">Zona 35601</span></h4><span class="id">id 35601</span></div>
+          <div class="zone__head"><h4>Zone 3 (F1)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>50.7 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>35.5 – 70.0</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.84 · pk 4.81</b></div>
@@ -1045,7 +1103,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35602</span><span lang="es">Zona 35602</span></h4><span class="id">id 35602</span></div>
+          <div class="zone__head"><h4>Zone 4 (F1)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>45.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.7 – 60.4</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.17 · pk 4.33</b></div>
@@ -1054,7 +1112,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35603</span><span lang="es">Zona 35603</span></h4><span class="id">id 35603</span></div>
+          <div class="zone__head"><h4>Zone 5 (F1)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.1 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.0 – 53.4</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.40 · pk 6.39</b></div>
@@ -1063,7 +1121,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35604</span><span lang="es">Zona 35604</span></h4><span class="id">id 35604</span></div>
+          <div class="zone__head"><h4>Zone 6 (F1)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>41.0 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>32.5 – 52.0</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.35 · pk 6.30</b></div>
@@ -1072,7 +1130,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35605</span><span lang="es">Zona 35605</span></h4><span class="id">id 35605</span></div>
+          <div class="zone__head"><h4>Zone 7 (F1)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.3 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.7 – 51.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.10 · pk 5.83</b></div>
@@ -1087,7 +1145,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 2</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9273 · 7 substrate zones</span><span lang="es">ID de sala 9273 · 7 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">7 substrate zones</span><span lang="es">7 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 57 %</span><span lang="es">Adherencia 57 %</span></span>
     </header>
@@ -1095,7 +1153,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>75.3 °F · 1.02 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>65.5 % · 14.4 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>75.0 °F · 4.14</b></div>
@@ -1104,7 +1162,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35606</span><span lang="es">Zona 35606</span></h4><span class="id">id 35606</span></div>
+          <div class="zone__head"><h4>Zone 1 (F2)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.4 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.8 – 53.0</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.19 · pk 4.59</b></div>
@@ -1113,7 +1171,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35607</span><span lang="es">Zona 35607</span></h4><span class="id">id 35607</span></div>
+          <div class="zone__head"><h4>Zone 2 (F2)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.5 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>32.9 – 53.8</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.04 · pk 5.09</b></div>
@@ -1122,7 +1180,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35608</span><span lang="es">Zona 35608</span></h4><span class="id">id 35608</span></div>
+          <div class="zone__head"><h4>Zone 3 (F2)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>44.0 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.8 – 56.5</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.32 · pk 5.13</b></div>
@@ -1131,7 +1189,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35609</span><span lang="es">Zona 35609</span></h4><span class="id">id 35609</span></div>
+          <div class="zone__head"><h4>Zone 4 (F2)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>46.1 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>34.3 – 57.9</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.76 · pk 4.19</b></div>
@@ -1140,7 +1198,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35610</span><span lang="es">Zona 35610</span></h4><span class="id">id 35610</span></div>
+          <div class="zone__head"><h4>Zone 5 (F2)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>41.6 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>35.3 – 48.8</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.21 · pk 4.62</b></div>
@@ -1149,7 +1207,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35611</span><span lang="es">Zona 35611</span></h4><span class="id">id 35611</span></div>
+          <div class="zone__head"><h4>Zone 6 (F2)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>44.6 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>35.6 – 53.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.53 · pk 3.94</b></div>
@@ -1158,7 +1216,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35612</span><span lang="es">Zona 35612</span></h4><span class="id">id 35612</span></div>
+          <div class="zone__head"><h4>Zone 7 (F2)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.4 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.5 – 52.9</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.93 · pk 5.65</b></div>
@@ -1173,7 +1231,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 3</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9274 · 7 substrate zones</span><span lang="es">ID de sala 9274 · 7 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">7 substrate zones</span><span lang="es">7 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 57 %</span><span lang="es">Adherencia 57 %</span></span>
     </header>
@@ -1181,7 +1239,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>76.0 °F · 1.04 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>65.8 % · 14.8 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>75.5 °F · 5.12</b></div>
@@ -1190,7 +1248,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35613</span><span lang="es">Zona 35613</span></h4><span class="id">id 35613</span></div>
+          <div class="zone__head"><h4>Zone 1 (F3)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>43.4 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>32.3 – 59.0</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.59 · pk 6.93</b></div>
@@ -1199,7 +1257,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35614</span><span lang="es">Zona 35614</span></h4><span class="id">id 35614</span></div>
+          <div class="zone__head"><h4>Zone 2 (F3)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>51.8 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>37.1 – 64.6</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.42 · pk 6.35</b></div>
@@ -1208,7 +1266,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35615</span><span lang="es">Zona 35615</span></h4><span class="id">id 35615</span></div>
+          <div class="zone__head"><h4>Zone 3 (F3)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>38.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>27.2 – 49.1</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.91 · pk 6.36</b></div>
@@ -1217,7 +1275,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35616</span><span lang="es">Zona 35616</span></h4><span class="id">id 35616</span></div>
+          <div class="zone__head"><h4>Zone 4 (F3)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>43.6 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>31.1 – 60.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.35 · pk 7.18</b></div>
@@ -1226,7 +1284,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35617</span><span lang="es">Zona 35617</span></h4><span class="id">id 35617</span></div>
+          <div class="zone__head"><h4>Zone 5 (F3)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>38.7 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>31.0 – 46.2</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.44 · pk 6.85</b></div>
@@ -1235,7 +1293,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35618</span><span lang="es">Zona 35618</span></h4><span class="id">id 35618</span></div>
+          <div class="zone__head"><h4>Zone 6 (F3)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>30.1 – 54.1</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.58 · pk 5.31</b></div>
@@ -1244,7 +1302,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35619</span><span lang="es">Zona 35619</span></h4><span class="id">id 35619</span></div>
+          <div class="zone__head"><h4>Zone 7 (F3)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>44.5 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.8 – 56.5</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.52 · pk 5.19</b></div>
@@ -1259,7 +1317,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 4</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9275 · 4 substrate zones</span><span lang="es">ID de sala 9275 · 4 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">4 substrate zones</span><span lang="es">4 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 43 %</span><span lang="es">Adherencia 43 %</span></span>
     </header>
@@ -1267,7 +1325,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>77.1 °F · 1.34 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>56.5 % · 13.5 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>76.4 °F · 4.20</b></div>
@@ -1276,7 +1334,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35620</span><span lang="es">Zona 35620</span></h4><span class="id">id 35620</span></div>
+          <div class="zone__head"><h4>F4:Zone 1</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>51.1 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>2.1 – 67.4</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.26 · pk 15.00</b></div>
@@ -1285,7 +1343,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35621</span><span lang="es">Zona 35621</span></h4><span class="id">id 35621</span></div>
+          <div class="zone__head"><h4>F4:Zone 2</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>44.5 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>0.0 – 65.1</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.25 · pk 30.00</b></div>
@@ -1294,7 +1352,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35622</span><span lang="es">Zona 35622</span></h4><span class="id">id 35622</span></div>
+          <div class="zone__head"><h4>F4:Zone 3</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>50.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>1.6 – 68.8</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.57 · pk 15.47</b></div>
@@ -1303,7 +1361,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35623</span><span lang="es">Zona 35623</span></h4><span class="id">id 35623</span></div>
+          <div class="zone__head"><h4>F4:Zone 4</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>50.6 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>1.5 – 67.2</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.70 · pk 15.00</b></div>
@@ -1318,7 +1376,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 5</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9276 · 5 substrate zones</span><span lang="es">ID de sala 9276 · 5 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">5 substrate zones</span><span lang="es">5 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 43 %</span><span lang="es">Adherencia 43 %</span></span>
     </header>
@@ -1326,7 +1384,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>72.6 °F · 1.20 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>56.4 % · 11.4 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>71.6 °F · 3.33</b></div>
@@ -1335,7 +1393,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35625</span><span lang="es">Zona 35625</span></h4><span class="id">id 35625</span></div>
+          <div class="zone__head"><h4>Zone 1 (F5)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>46.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>0.0 – 89.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.33 · pk 30.00</b></div>
@@ -1344,7 +1402,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35626</span><span lang="es">Zona 35626</span></h4><span class="id">id 35626</span></div>
+          <div class="zone__head"><h4>Zone 2 (F5)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>53.4 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>0.0 – 94.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.18 · pk 30.00</b></div>
@@ -1353,7 +1411,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35627</span><span lang="es">Zona 35627</span></h4><span class="id">id 35627</span></div>
+          <div class="zone__head"><h4>Zone 3 (F5)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>51.5 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>0.0 – 97.2</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.08 · pk 30.00</b></div>
@@ -1362,7 +1420,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35628</span><span lang="es">Zona 35628</span></h4><span class="id">id 35628</span></div>
+          <div class="zone__head"><h4>Zone 4 (F5)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>48.7 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>0.6 – 96.5</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.36 · pk 17.50</b></div>
@@ -1371,7 +1429,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35629</span><span lang="es">Zona 35629</span></h4><span class="id">id 35629</span></div>
+          <div class="zone__head"><h4>Zone 5 (F5)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>55.5 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>0.2 – 88.1</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>2.68 · pk 22.50</b></div>
@@ -1386,7 +1444,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 6</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9277 · 5 substrate zones</span><span lang="es">ID de sala 9277 · 5 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">5 substrate zones</span><span lang="es">5 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 29 %</span><span lang="es">Adherencia 29 %</span></span>
     </header>
@@ -1394,7 +1452,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>80.1 °F · 0.97 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>72.2 % · 18.3 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>80.7 °F · 6.13</b></div>
@@ -1403,7 +1461,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35631</span><span lang="es">Zona 35631</span></h4><span class="id">id 35631</span></div>
+          <div class="zone__head"><h4>Zone 1 (F6)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>39.0 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>29.6 – 63.4</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.66 · pk 5.11</b></div>
@@ -1412,7 +1470,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35632</span><span lang="es">Zona 35632</span></h4><span class="id">id 35632</span></div>
+          <div class="zone__head"><h4>Zone 2 (F6)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>36.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>25.5 – 47.3</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>6.57 · pk 7.84</b></div>
@@ -1421,7 +1479,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35633</span><span lang="es">Zona 35633</span></h4><span class="id">id 35633</span></div>
+          <div class="zone__head"><h4>Zone 3 (F6)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>36.4 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>21.8 – 57.2</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>6.62 · pk 11.74</b></div>
@@ -1430,7 +1488,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35634</span><span lang="es">Zona 35634</span></h4><span class="id">id 35634</span></div>
+          <div class="zone__head"><h4>Zone 4 (F6)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>35.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>22.2 – 58.9</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>6.61 · pk 9.48</b></div>
@@ -1439,7 +1497,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35635</span><span lang="es">Zona 35635</span></h4><span class="id">id 35635</span></div>
+          <div class="zone__head"><h4>Zone 5 (F6)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.0 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>31.2 – 66.9</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>6.19 · pk 7.45</b></div>
@@ -1454,7 +1512,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 7</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9278 · 4 substrate zones</span><span lang="es">ID de sala 9278 · 4 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">4 substrate zones</span><span lang="es">4 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 43 %</span><span lang="es">Adherencia 43 %</span></span>
     </header>
@@ -1462,7 +1520,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>78.1 °F · 0.98 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>70.1 % · 16.9 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>77.7 °F · 6.09</b></div>
@@ -1471,7 +1529,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35636</span><span lang="es">Zona 35636</span></h4><span class="id">id 35636</span></div>
+          <div class="zone__head"><h4>Zone 1 (F7)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>34.7 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>20.0 – 48.0</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.81 · pk 11.02</b></div>
@@ -1480,7 +1538,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35637</span><span lang="es">Zona 35637</span></h4><span class="id">id 35637</span></div>
+          <div class="zone__head"><h4>Zone 2 (F7)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>34.8 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>21.7 – 50.6</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>6.23 · pk 8.53</b></div>
@@ -1489,7 +1547,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35638</span><span lang="es">Zona 35638</span></h4><span class="id">id 35638</span></div>
+          <div class="zone__head"><h4>Zone 3 (F7)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>31.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>19.2 – 45.3</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.04 · pk 11.13</b></div>
@@ -1498,7 +1556,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35639</span><span lang="es">Zona 35639</span></h4><span class="id">id 35639</span></div>
+          <div class="zone__head"><h4>Zone 4 (F7)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>33.7 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>15.7 – 52.8</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>7.28 · pk 26.79</b></div>
@@ -1513,7 +1571,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 8</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9279 · 8 substrate zones</span><span lang="es">ID de sala 9279 · 8 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">8 substrate zones</span><span lang="es">8 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 29 %</span><span lang="es">Adherencia 29 %</span></span>
     </header>
@@ -1521,7 +1579,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>81.8 °F · 1.12 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>69.8 % · 18.5 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>81.2 °F · 5.16</b></div>
@@ -1530,7 +1588,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35641</span><span lang="es">Zona 35641</span></h4><span class="id">id 35641</span></div>
+          <div class="zone__head"><h4>Zone 1 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>36.8 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>24.3 – 54.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>6.15 · pk 7.81</b></div>
@@ -1539,7 +1597,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35642</span><span lang="es">Zona 35642</span></h4><span class="id">id 35642</span></div>
+          <div class="zone__head"><h4>Zone 2 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>46.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>27.0 – 78.8</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.43 · pk 8.67</b></div>
@@ -1548,7 +1606,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35643</span><span lang="es">Zona 35643</span></h4><span class="id">id 35643</span></div>
+          <div class="zone__head"><h4>Zone 3 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>50.8 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>28.7 – 78.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.76 · pk 7.01</b></div>
@@ -1557,7 +1615,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35644</span><span lang="es">Zona 35644</span></h4><span class="id">id 35644</span></div>
+          <div class="zone__head"><h4>Zone 4 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>39.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>22.4 – 65.8</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.45 · pk 7.78</b></div>
@@ -1566,7 +1624,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35645</span><span lang="es">Zona 35645</span></h4><span class="id">id 35645</span></div>
+          <div class="zone__head"><h4>Zone 5 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>41.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>28.3 – 62.7</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.48 · pk 5.63</b></div>
@@ -1575,7 +1633,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35646</span><span lang="es">Zona 35646</span></h4><span class="id">id 35646</span></div>
+          <div class="zone__head"><h4>Zone 6 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>53.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>29.1 – 79.0</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.41 · pk 7.97</b></div>
@@ -1584,7 +1642,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone bad">
-          <div class="zone__head"><h4><span lang="en">Zone 35647</span><span lang="es">Zona 35647</span></h4><span class="id">id 35647</span></div>
+          <div class="zone__head"><h4>Zone 7 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>36.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>21.1 – 63.5</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>5.67 · pk 10.44</b></div>
@@ -1593,7 +1651,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35648</span><span lang="es">Zona 35648</span></h4><span class="id">id 35648</span></div>
+          <div class="zone__head"><h4>Zone 8 (F8)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>42.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>31.3 – 61.4</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.94 · pk 6.00</b></div>
@@ -1608,7 +1666,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <header class="card__head">
       <div>
         <p class="card__title">Flower 9</p>
-        <p class="card__subtitle"><span lang="en">Room ID 9282 · 4 substrate zones</span><span lang="es">ID de sala 9282 · 4 zonas</span></p>
+        <p class="card__subtitle"><span lang="en">4 substrate zones</span><span lang="es">4 zonas de sustrato</span></p>
       </div>
       <span class="card__meta"><span lang="en">Adherence 57 %</span><span lang="es">Adherencia 57 %</span></span>
     </header>
@@ -1616,7 +1674,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="zones">
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de sala</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
+          <div class="zone__head"><h4><span lang="en">Room aggregate</span><span lang="es">Agregado de cuarto</span></h4><span class="id"><span lang="en">all zones</span><span lang="es">todas las zonas</span></span></div>
           <div class="kv"><span><span lang="en">Air / VPD</span><span lang="es">Aire / VPD</span></span><b>76.9 °F · 1.26 kPa</b></div>
           <div class="kv"><span><span lang="en">RH / abs hum</span><span lang="es">HR / hum abs</span></span><b>60.0 % · 13.9 g/m³</b></div>
           <div class="kv"><span><span lang="en">Substrate T / EC</span><span lang="es">Temp sust / CE</span></span><b>75.5 °F · 4.46</b></div>
@@ -1625,7 +1683,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35651</span><span lang="es">Zona 35651</span></h4><span class="id">id 35651</span></div>
+          <div class="zone__head"><h4>Zone 1 (F9)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>44.9 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>34.8 – 55.5</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.75 · pk 6.98</b></div>
@@ -1634,7 +1692,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 35998</span><span lang="es">Zona 35998</span></h4><span class="id">id 35998</span></div>
+          <div class="zone__head"><h4>Zone 2 (F9)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>43.5 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>33.0 – 64.6</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.83 · pk 7.64</b></div>
@@ -1643,7 +1701,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone warn">
-          <div class="zone__head"><h4><span lang="en">Zone 35999</span><span lang="es">Zona 35999</span></h4><span class="id">id 35999</span></div>
+          <div class="zone__head"><h4>Zone 3 (F9)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>39.4 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>30.9 – 51.9</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>3.47 · pk 4.77</b></div>
@@ -1652,7 +1710,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
 
         <div class="zone ok">
-          <div class="zone__head"><h4><span lang="en">Zone 36000</span><span lang="es">Zona 36000</span></h4><span class="id">id 36000</span></div>
+          <div class="zone__head"><h4>Zone 4 (F9)</h4><span class="id"><span lang="en">sensor zone</span><span lang="es">zona sensor</span></span></div>
           <div class="kv"><span><span lang="en">VWC avg</span><span lang="es">VWC prom</span></span><b>44.2 %</b></div>
           <div class="kv"><span><span lang="en">VWC range</span><span lang="es">VWC rango</span></span><b>32.7 – 79.6</b></div>
           <div class="kv"><span><span lang="en">Pore EC</span><span lang="es">CE poro</span></span><b>4.81 · pk 7.16</b></div>
@@ -1664,14 +1722,14 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
   </section>
 
   <!-- NON-FLOWER ROOMS -->
-  <h2 class="h1"><span lang="en">Supporting rooms</span><span lang="es">Salas de apoyo</span></h2>
+  <h2 class="h1"><span lang="en">Supporting rooms</span><span lang="es">Cuartos de apoyo</span></h2>
   <p class="eyebrow"><span lang="en">Propagation · veg · dry · vault · water — climate-only or substrate-only coverage</span><span lang="es">Propagación · veg · secado · bóveda · agua — cobertura sólo clima o sólo sustrato</span></p>
 
   <section class="card">
     <div class="card__body tight">
       <table class="data-table">
         <thead>
-          <tr><th><span lang="en">Room</span><span lang="es">Sala</span></th><th><span lang="en">Type</span><span lang="es">Tipo</span></th><th class="num"><span lang="en">Air °F</span><span lang="es">Aire °F</span></th><th class="num"><span lang="en">VPD kPa</span><span lang="es">VPD kPa</span></th><th class="num"><span lang="en">RH %</span><span lang="es">HR %</span></th><th class="num"><span lang="en">VWC %</span><span lang="es">VWC %</span></th><th class="num"><span lang="en">EC</span><span lang="es">CE</span></th><th><span lang="en">Notes</span><span lang="es">Notas</span></th></tr>
+          <tr><th><span lang="en">Room</span><span lang="es">Cuarto</span></th><th><span lang="en">Type</span><span lang="es">Tipo</span></th><th class="num"><span lang="en">Air °F</span><span lang="es">Aire °F</span></th><th class="num"><span lang="en">VPD kPa</span><span lang="es">VPD kPa</span></th><th class="num"><span lang="en">RH %</span><span lang="es">HR %</span></th><th class="num"><span lang="en">VWC %</span><span lang="es">VWC %</span></th><th class="num"><span lang="en">EC</span><span lang="es">CE</span></th><th><span lang="en">Notes</span><span lang="es">Notas</span></th></tr>
         </thead>
         <tbody>
           <tr>
@@ -1771,7 +1829,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
 
   <!-- ACTIVE HARVEST GROUPS -->
   <h2 class="h1"><span lang="en">Active harvest groups</span><span lang="es">Grupos de cosecha activos</span></h2>
-  <p class="eyebrow"><span lang="en">10 flower-room runs (3 late · 2 mid · 5 early) · 9 veg/prop/mom groups in Veg 1 · every flower room is occupied</span><span lang="es">10 corridas en floración (3 tardía · 2 media · 5 temprana) · 9 grupos veg/prop/madres en Veg 1 · cada sala de floración está ocupada</span></p>
+  <p class="eyebrow"><span lang="en">10 flower-room runs (3 late · 2 mid · 5 early) · 9 veg/prop/mom groups in Veg 1 · every flower room is occupied</span><span lang="es">10 corridas en floración (3 tardía · 2 media · 5 temprana) · 9 grupos veg/prop/madres en Veg 1 · cada cuarto de floración está ocupado</span></p>
 
   <div class="zones">
 
@@ -1821,6 +1879,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
           <span><span lang="en">Dryback</span><span lang="es">Dryback</span></span>
           <b>17.6 % <span class="pill warn" style="margin-left:6px;font-size:10px;padding:1px 6px;">20.0–45.0</span></b>
         </div>
+      </div>
+
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">53.4 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="32.6" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="25.2" x2="236" y2="25.2" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,27.1 L 23.3,26.8 L 42.7,26.8 L 62.0,26.5 L 81.3,26.3 L 100.7,26.1 L 120.0,49.2 L 139.3,25.3 L 158.7,25.2 L 178.0,24.3 L 197.3,25.0 L 216.7,26.5 L 236.0,26.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="26.8" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val ok">34.8 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,35.6 L 23.3,35.4 L 42.7,34.9 L 62.0,34.5 L 81.3,34.0 L 100.7,33.7 L 120.0,20.0 L 139.3,31.1 L 158.7,32.3 L 178.0,32.3 L 197.3,32.1 L 216.7,37.1 L 236.0,36.4" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="36.4" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 28.0–45.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val warn">18.6 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="22.4" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="20.0" x2="236" y2="20.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,31.1 L 23.3,31.1 L 42.7,31.2 L 62.0,31.3 L 81.3,31.3 L 100.7,31.3 L 120.0,49.2 L 139.3,31.9 L 158.7,31.3 L 178.0,30.8 L 197.3,31.3 L 216.7,30.3 L 236.0,30.7" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="30.7" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 20.0–45.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val bad">8.78 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="28.1" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="22.9" x2="236" y2="22.9" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 23.3,40.4 L 42.7,40.5 L 62.0,40.5 L 81.3,40.7 L 100.7,40.6 L 158.7,37.3 L 178.0,37.3 L 197.3,37.3 L 216.7,47.8 L 236.0,49.2" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="49.2" r="2.8" fill="#b23b3b" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 10.00–18.00 %</span><span class="mchart__n">10d</span></div></div></div>
       </div>
 
       <div class="zone__verdict warn">
@@ -1877,6 +1940,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
       </div>
 
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">52.8 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,35.9 L 21.8,35.5 L 39.7,35.0 L 57.5,34.4 L 75.4,34.2 L 93.2,33.6 L 111.1,33.4 L 128.9,33.2 L 146.8,32.8 L 164.6,32.6 L 182.5,32.0 L 200.3,31.8 L 218.2,31.6 L 236.0,31.4" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="31.4" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val ok">34.8 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,34.5 L 21.8,34.0 L 39.7,33.5 L 57.5,34.0 L 75.4,33.3 L 93.2,33.3 L 111.1,32.8 L 128.9,31.6 L 146.8,31.8 L 164.6,32.8 L 182.5,32.3 L 200.3,32.3 L 218.2,33.5 L 236.0,32.3" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="32.3" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 28.0–45.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val warn">18.0 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="36.5" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="27.1" x2="236" y2="27.1" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,49.2 L 21.8,49.2 L 39.7,49.2 L 57.5,48.4 L 75.4,48.7 L 93.2,48.4 L 111.1,48.6 L 128.9,48.9 L 146.8,48.7 L 164.6,47.8 L 182.5,47.7 L 200.3,47.6 L 218.2,46.7 L 236.0,47.3" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="47.3" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 20.0–45.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val bad">8.60 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="32.8" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="25.2" x2="236" y2="25.2" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 21.8,47.2 L 39.7,47.6 L 57.5,47.2 L 75.4,48.1 L 93.2,47.5 L 111.1,47.9 L 128.9,49.2 L 146.8,48.6 L 164.6,47.1 L 182.5,47.6 L 200.3,46.6 L 218.2,44.8 L 236.0,46.6" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="46.6" r="2.8" fill="#b23b3b" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 10.00–18.00 %</span><span class="mchart__n">13d</span></div></div></div>
+      </div>
+
       <div class="zone__verdict bad">
         <span lang="en">29% of late-flower targets in band. Out-of-band: RH, Pore EC.</span>
         <span lang="es">29% de objetivos de fase late en banda. Fuera de banda: HR, CE de poro.</span>
@@ -1929,6 +1997,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
           <span><span lang="en">Dryback</span><span lang="es">Dryback</span></span>
           <b>32.4 % <span class="pill ok" style="margin-left:6px;font-size:10px;padding:1px 6px;">20.0–45.0</span></b>
         </div>
+      </div>
+
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val warn">67.6 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="32.4" width="232" height="16.7" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="40.8" x2="236" y2="40.8" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,31.4 L 21.8,31.3 L 39.7,31.3 L 57.5,31.2 L 75.4,31.4 L 93.2,31.6 L 111.1,31.7 L 128.9,31.8 L 146.8,31.8 L 164.6,32.1 L 182.5,32.3 L 200.3,33.1 L 218.2,34.0 L 236.0,8.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="8.8" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val ok">32.2 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="15.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="16.5" x2="236" y2="16.5" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,14.4 L 21.8,14.2 L 39.7,14.3 L 57.5,14.5 L 75.4,18.6 L 93.2,18.8 L 111.1,19.0 L 128.9,19.6 L 146.8,20.1 L 164.6,21.6 L 182.5,21.9 L 200.3,19.3 L 218.2,19.8 L 236.0,49.2" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="49.2" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 28.0–45.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val ok">35.4 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="35.4" width="232" height="13.8" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="42.3" x2="236" y2="42.3" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,45.0 L 21.8,45.1 L 39.7,45.0 L 57.5,44.9 L 75.4,42.5 L 93.2,42.5 L 111.1,42.5 L 128.9,42.2 L 146.8,41.9 L 164.6,41.2 L 182.5,41.0 L 200.3,43.2 L 218.2,43.4 L 236.0,8.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="8.8" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 20.0–45.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val bad">22.76 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="27.0" width="232" height="22.2" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="38.1" x2="236" y2="38.1" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 21.8,15.3 L 39.7,14.8 L 57.5,14.2 L 75.4,14.3 L 93.2,13.7 L 111.1,13.8 L 128.9,12.7 L 146.8,12.3 L 164.6,8.8 L 182.5,9.4 L 200.3,15.9 L 218.2,16.1 L 236.0,18.6" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="18.6" r="2.8" fill="#b23b3b" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 10.00–18.00 %</span><span class="mchart__n">13d</span></div></div></div>
       </div>
 
       <div class="zone__verdict ok">
@@ -1984,6 +2057,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
       </div>
 
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">54.8 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,39.5 L 21.8,39.5 L 39.7,36.5 L 57.5,37.1 L 75.4,37.1 L 93.2,36.8 L 111.1,36.5 L 128.9,36.3 L 146.8,36.0 L 164.6,35.2 L 182.5,34.6 L 200.3,34.4 L 218.2,34.1 L 236.0,33.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="33.8" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 50.0–65.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val warn">33.6 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="34.1" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="25.9" x2="236" y2="25.9" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,49.2 L 21.8,47.6 L 39.7,45.8 L 57.5,44.9 L 75.4,44.9 L 93.2,45.3 L 111.1,44.5 L 128.9,44.1 L 146.8,44.3 L 164.6,46.4 L 182.5,45.8 L 200.3,46.0 L 218.2,47.6 L 236.0,45.3" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="45.3" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 35.0–52.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val ok">21.2 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,31.2 L 21.8,33.3 L 39.7,32.5 L 57.5,34.4 L 75.4,34.4 L 93.2,33.6 L 111.1,34.4 L 128.9,34.9 L 146.8,34.1 L 164.6,30.9 L 182.5,30.9 L 200.3,30.3 L 218.2,27.7 L 236.0,30.6" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="30.6" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 15.0–30.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val ok">10.21 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 21.8,32.1 L 39.7,38.1 L 57.5,34.4 L 75.4,36.8 L 93.2,34.1 L 111.1,35.7 L 128.9,37.3 L 146.8,37.1 L 164.6,33.7 L 182.5,34.1 L 200.3,32.8 L 218.2,28.3 L 236.0,31.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="31.8" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 8.00–14.00 %</span><span class="mchart__n">13d</span></div></div></div>
+      </div>
+
       <div class="zone__verdict warn">
         <span lang="en">57% of mid-flower targets in band. Out-of-band: Pore EC.</span>
         <span lang="es">57% de objetivos de fase mid en banda. Fuera de banda: CE de poro.</span>
@@ -2035,6 +2113,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
           <span><span lang="en">Dryback</span><span lang="es">Dryback</span></span>
           <b>17.5 % <span class="pill ok" style="margin-left:6px;font-size:10px;padding:1px 6px;">15.0–30.0</span></b>
         </div>
+      </div>
+
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">55.1 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,14.5 L 21.8,21.2 L 39.7,32.8 L 57.5,37.6 L 75.4,38.9 L 93.2,39.8 L 111.1,39.8 L 128.9,40.0 L 146.8,39.2 L 164.6,38.9 L 182.5,38.9 L 200.3,38.9 L 218.2,38.7 L 236.0,38.4" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="38.4" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 50.0–65.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val ok">35.1 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="38.1" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="27.9" x2="236" y2="27.9" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,49.2 L 21.8,46.9 L 39.7,44.7 L 57.5,45.1 L 75.4,46.0 L 93.2,45.4 L 111.1,45.8 L 128.9,47.6 L 146.8,46.5 L 164.6,46.5 L 182.5,46.7 L 200.3,46.7 L 218.2,48.3 L 236.0,47.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="47.8" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 35.0–52.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val ok">19.9 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,11.8 L 21.8,21.2 L 39.7,35.5 L 57.5,39.5 L 75.4,40.0 L 93.2,41.4 L 111.1,41.4 L 128.9,39.2 L 146.8,39.8 L 164.6,39.5 L 182.5,39.2 L 200.3,39.2 L 218.2,37.1 L 236.0,37.3" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="37.3" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 15.0–30.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val ok">9.92 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 21.8,46.6 L 39.7,19.1 L 57.5,32.6 L 75.4,38.3 L 93.2,39.9 L 111.1,39.8 L 128.9,39.4 L 146.8,34.0 L 164.6,38.9 L 182.5,37.2 L 200.3,36.7 L 218.2,34.4 L 236.0,34.5" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="34.5" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 8.00–14.00 %</span><span class="mchart__n">13d</span></div></div></div>
       </div>
 
       <div class="zone__verdict warn">
@@ -2090,6 +2173,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
       </div>
 
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">50.9 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.1" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="28.9" x2="236" y2="28.9" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,43.7 L 21.8,49.2 L 39.7,26.9 L 57.5,26.5 L 75.4,25.1 L 93.2,40.5 L 111.1,39.1 L 128.9,34.3 L 146.8,35.5 L 164.6,38.3 L 182.5,39.5 L 200.3,39.9 L 218.2,40.7 L 236.0,39.9" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="39.9" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val warn">27.9 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="31.8" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="24.7" x2="236" y2="24.7" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,42.0 L 21.8,49.2 L 39.7,43.8 L 57.5,44.1 L 75.4,40.6 L 93.2,44.9 L 111.1,48.1 L 128.9,43.4 L 146.8,43.3 L 164.6,43.9 L 182.5,44.1 L 200.3,43.3 L 218.2,42.8 L 236.0,42.2" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="42.2" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 30.0–50.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val warn">23.0 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="28.1" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="22.9" x2="236" y2="22.9" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,49.2 L 21.8,46.0 L 39.7,31.5 L 57.5,30.6 L 75.4,33.4 L 93.2,42.8 L 111.1,37.7 L 128.9,38.7 L 146.8,40.0 L 164.6,41.8 L 182.5,42.8 L 200.3,44.3 L 218.2,45.4 L 236.0,45.4" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="45.4" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 25.0–40.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val ok">6.75 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="19.7" width="232" height="29.4" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="34.4" x2="236" y2="34.4" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 21.8,36.4 L 39.7,37.1 L 57.5,33.6 L 75.4,8.8 L 93.2,36.2 L 111.1,42.8 L 128.9,47.2 L 146.8,42.3 L 164.6,43.3 L 182.5,43.7 L 200.3,46.0 L 218.2,43.9 L 236.0,44.2" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="44.2" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 5.00–10.00 %</span><span class="mchart__n">13d</span></div></div></div>
+      </div>
+
       <div class="zone__verdict warn">
         <span lang="en">43% of early-flower targets in band. Out-of-band: Substrate temp, Pore EC, Dryback.</span>
         <span lang="es">43% de objetivos de fase early en banda. Fuera de banda: Temp. sustrato, CE de poro, Dryback.</span>
@@ -2141,6 +2229,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
           <span><span lang="en">Dryback</span><span lang="es">Dryback</span></span>
           <b>17.4 % <span class="pill bad" style="margin-left:6px;font-size:10px;padding:1px 6px;">25.0–40.0</span></b>
         </div>
+      </div>
+
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">61.8 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="12.2" width="232" height="37.0" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="30.7" x2="236" y2="30.7" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,9.6 L 23.3,9.6 L 42.7,9.4 L 62.0,8.8 L 81.3,14.8 L 100.7,20.5 L 120.0,42.1 L 139.3,27.3 L 158.7,17.0 L 178.0,17.9 L 197.3,19.6 L 216.7,19.0 L 236.0,20.3" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="20.3" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val ok">38.2 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="12.2" width="232" height="15.2" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="19.8" x2="236" y2="19.8" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,27.2 L 23.3,27.1 L 42.7,26.8 L 62.0,27.4 L 81.3,20.2 L 100.7,19.2 L 120.0,49.2 L 139.3,8.8 L 158.7,11.3 L 178.0,11.3 L 197.3,14.1 L 216.7,14.8 L 236.0,17.4" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="17.4" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 30.0–50.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val warn">23.5 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="15.5" width="232" height="13.4" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="22.2" x2="236" y2="22.2" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,18.9 L 23.3,19.1 L 42.7,19.4 L 62.0,18.3 L 81.3,29.6 L 100.7,33.6 L 120.0,8.8 L 139.3,49.2 L 158.7,41.3 L 178.0,41.8 L 197.3,39.3 L 216.7,38.2 L 236.0,35.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="35.8" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 25.0–40.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val ok">9.63 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="26.4" width="232" height="11.4" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="32.1" x2="236" y2="32.1" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 23.3,8.8 L 42.7,9.2 L 62.0,9.7 L 81.3,24.9 L 100.7,26.2 L 120.0,26.7 L 139.3,49.2 L 158.7,41.0 L 178.0,34.5 L 197.3,35.3 L 216.7,32.9 L 236.0,29.0" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="29.0" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 5.00–10.00 %</span><span class="mchart__n">12d</span></div></div></div>
       </div>
 
       <div class="zone__verdict bad">
@@ -2196,6 +2289,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
       </div>
 
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">45.7 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="35.7" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="26.7" x2="236" y2="26.7" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,46.1 L 23.3,41.8 L 42.7,42.2 L 62.0,44.2 L 81.3,45.2 L 100.7,46.3 L 120.0,46.7 L 139.3,46.5 L 158.7,48.6 L 178.0,20.1 L 197.3,42.4 L 216.7,49.2 L 236.0,43.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="43.8" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val ok">33.6 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="33.9" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="25.8" x2="236" y2="25.8" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,23.4 L 23.3,26.6 L 42.7,25.8 L 62.0,30.0 L 81.3,32.7 L 100.7,35.6 L 120.0,40.0 L 139.3,39.8 L 158.7,44.6 L 178.0,44.1 L 197.3,37.5 L 216.7,47.3 L 236.0,49.2" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="49.2" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 30.0–50.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val bad">12.1 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="16.2" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="16.9" x2="236" y2="16.9" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,49.2 L 23.3,44.4 L 42.7,45.2 L 62.0,43.7 L 81.3,42.6 L 100.7,41.4 L 120.0,38.8 L 139.3,38.9 L 158.7,37.1 L 178.0,20.2 L 197.3,37.8 L 216.7,35.7 L 236.0,31.3" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="31.3" r="2.8" fill="#b23b3b" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 25.0–40.0 %</span><span class="mchart__n">13d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val ok">5.00 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="24.6" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="21.1" x2="236" y2="21.1" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 23.3,49.2 L 42.7,37.9 L 62.0,42.2 L 81.3,41.4 L 100.7,39.4 L 120.0,34.2 L 139.3,31.5 L 158.7,27.9 L 178.0,27.1 L 197.3,25.4 L 216.7,20.1 L 236.0,24.8" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="24.8" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 5.00–10.00 %</span><span class="mchart__n">12d</span></div></div></div>
+      </div>
+
       <div class="zone__verdict warn">
         <span lang="en">43% of early-flower targets in band. Out-of-band: Substrate temp, Dryback.</span>
         <span lang="es">43% de objetivos de fase early en banda. Fuera de banda: Temp. sustrato, Dryback.</span>
@@ -2247,6 +2345,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
           <span><span lang="en">Dryback</span><span lang="es">Dryback</span></span>
           <b>23.9 % <span class="pill warn" style="margin-left:6px;font-size:10px;padding:1px 6px;">25.0–40.0</span></b>
         </div>
+      </div>
+
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">47.8 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="40.3" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="29.0" x2="236" y2="29.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,43.7 L 21.8,43.1 L 39.7,43.3 L 57.5,42.9 L 75.4,43.9 L 93.2,43.7 L 111.1,42.7 L 128.9,41.5 L 146.8,41.3 L 164.6,44.5 L 182.5,44.9 L 200.3,44.7 L 218.2,44.3 L 236.0,43.5" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="43.5" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val bad">23.0 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="26.4" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="22.0" x2="236" y2="22.0" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,46.5 L 21.8,46.0 L 39.7,46.0 L 57.5,40.5 L 75.4,47.1 L 93.2,47.4 L 111.1,49.2 L 128.9,48.8 L 146.8,39.5 L 164.6,41.8 L 182.5,42.0 L 200.3,41.8 L 218.2,43.0 L 236.0,42.2" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="42.2" r="2.8" fill="#b23b3b" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 30.0–50.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val warn">24.8 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="33.8" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="25.7" x2="236" y2="25.7" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,39.7 L 21.8,39.9 L 39.7,40.2 L 57.5,49.2 L 75.4,39.0 L 93.2,37.9 L 111.1,33.8 L 128.9,33.6 L 146.8,48.9 L 164.6,48.7 L 182.5,48.7 L 200.3,48.9 L 218.2,46.5 L 236.0,46.9" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="46.9" r="2.8" fill="#d48f24" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 25.0–40.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val bad">12.33 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="26.7" width="232" height="22.5" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="37.9" x2="236" y2="37.9" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 21.8,19.1 L 39.7,21.3 L 57.5,29.1 L 75.4,19.4 L 93.2,20.9 L 111.1,17.2 L 128.9,20.8 L 146.8,11.0 L 164.6,10.3 L 182.5,11.0 L 200.3,11.8 L 218.2,8.8 L 236.0,10.1" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="10.1" r="2.8" fill="#b23b3b" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 5.00–10.00 %</span><span class="mchart__n">13d</span></div></div></div>
       </div>
 
       <div class="zone__verdict warn">
@@ -2302,6 +2405,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         </div>
       </div>
 
+      <div style="margin-top:var(--s-3);padding-top:var(--s-2);border-top:1px solid var(--border);">
+        <div style="font-size:var(--text-xs);color:var(--fg-subtle);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2);"><span lang="en">Daily substrate metrics · 14-day</span><span lang="es">Métricas diarias de sustrato · 14 días</span></div>
+<div class="mchart-grid"><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Peak VWC · daily</span><span lang="es">VWC pico · diario</span></span><span class="mchart__val ok">55.4 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="14.2" width="232" height="34.9" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="31.7" x2="236" y2="31.7" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,36.9 L 21.8,38.9 L 39.7,38.7 L 57.5,8.8 L 75.4,27.5 L 93.2,27.7 L 111.1,27.7 L 128.9,30.3 L 146.8,32.4 L 164.6,32.2 L 182.5,31.7 L 200.3,34.5 L 218.2,36.9 L 236.0,30.7" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="30.7" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 45.0–65.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Low VWC · daily</span><span lang="es">VWC mín · diario</span></span><span class="mchart__val ok">35.6 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="34.6" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="26.1" x2="236" y2="26.1" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,30.5 L 21.8,35.5 L 39.7,37.9 L 57.5,30.6 L 75.4,14.7 L 93.2,11.8 L 111.1,16.6 L 128.9,33.2 L 146.8,40.3 L 164.6,42.9 L 182.5,37.9 L 200.3,44.1 L 218.2,46.9 L 236.0,49.2" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="49.2" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 30.0–50.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Dryback · daily</span><span lang="es">Dryback · diario</span></span><span class="mchart__val bad">19.7 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="8.8" width="232" height="19.5" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="18.6" x2="236" y2="18.6" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 4.0,42.1 L 21.8,39.7 L 39.7,37.7 L 57.5,20.9 L 75.4,47.0 L 93.2,49.2 L 111.1,45.4 L 128.9,35.0 L 146.8,31.2 L 164.6,29.1 L 182.5,32.6 L 200.3,29.9 L 218.2,29.7 L 236.0,23.4" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="23.4" r="2.8" fill="#b23b3b" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 25.0–40.0 %</span><span class="mchart__n">14d</span></div></div><div class="mchart"><div class="mchart__head"><span class="mchart__title"><span lang="en">Overnight transp.</span><span lang="es">Transpir. nocturna</span></span><span class="mchart__val ok">9.71 %</span></div><svg viewBox="0 0 240 58" width="100%" height="58" preserveAspectRatio="none" aria-hidden="true" style="display:block;"><rect x="4" y="17.5" width="232" height="31.7" fill="#cbeeb0" opacity="0.38"/><line x1="4" y1="33.3" x2="236" y2="33.3" stroke="#cbeeb0" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.9"/><path d="M 21.8,23.5 L 39.7,25.4 L 57.5,22.0 L 75.4,28.0 L 93.2,45.7 L 111.1,20.0 L 128.9,13.7 L 146.8,8.8 L 164.6,11.7 L 182.5,10.6 L 200.3,11.6 L 218.2,11.4 L 236.0,18.9" fill="none" stroke="#635e51" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="236.0" cy="18.9" r="2.8" fill="#3a7d44" stroke="#ffffff" stroke-width="1.25"/></svg><div class="mchart__foot"><span class="mchart__band"><span lang="en">Target</span><span lang="es">Objetivo</span> 5.00–10.00 %</span><span class="mchart__n">13d</span></div></div></div>
+      </div>
+
       <div class="zone__verdict warn">
         <span lang="en">43% of early-flower targets in band. Out-of-band: VPD, Substrate temp, Dryback.</span>
         <span lang="es">43% de objetivos de fase early en banda. Fuera de banda: VPD, Temp. sustrato, Dryback.</span>
@@ -2311,7 +2419,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
   </div>
 
   <h3 style="margin-top:var(--s-5);font-size:var(--text-lg);"><span lang="en">Veg 1 — propagation, veg, and mother stock</span><span lang="es">Veg 1 — propagación, vegetación y madres</span></h3>
-  <p class="eyebrow"><span lang="en">9 groups feeding the flower rooms · substrate-only sensing in Veg 1 (no ATMOS station)</span><span lang="es">9 grupos alimentando las salas de floración · sólo sensores de sustrato en Veg 1 (sin estación ATMOS)</span></p>
+  <p class="eyebrow"><span lang="en">9 groups feeding the flower rooms · substrate-only sensing in Veg 1 (no ATMOS station)</span><span lang="es">9 grupos alimentando los cuartos de floración · sólo sensores de sustrato en Veg 1 (sin estación ATMOS)</span></p>
   <div class="card" style="padding:0;overflow:hidden;">
     <div style="overflow-x:auto;">
       <table>
@@ -2426,11 +2534,11 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         <h4><span lang="en">Root-zone temperature is the facility's primary yield drag</span><span lang="es">La temperatura radicular es el principal freno de rendimiento de la instalación</span></h4>
         <p>
           <span lang="en">7 of 10 flower rooms run substrate temperatures <strong>above the 75 °F ceiling</strong>, with <strong>Flower 8 at 81.2 °F</strong> and <strong>Flower 6 at 80.7 °F</strong> as the hottest. The AROYA / METER guidance is 65 – 75 °F optimal; above 77 °F root function materially drops. Only Flower 1 (72.1 °F) and Flower 5 (71.6 °F) are cleanly inside the band.</span>
-          <span lang="es">7 de 10 salas de floración tienen temperaturas del sustrato <strong>sobre el límite de 75 °F</strong>, con <strong>Flower 8 en 81.2 °F</strong> y <strong>Flower 6 en 80.7 °F</strong> como las más calientes. La guía de AROYA / METER es 65 – 75 °F óptimo; por encima de 77 °F la función radicular cae materialmente. Sólo Flower 1 (72.1 °F) y Flower 5 (71.6 °F) están limpiamente dentro de la banda.</span>
+          <span lang="es">7 de 10 cuartos de floración tienen temperaturas del sustrato <strong>sobre el límite de 75 °F</strong>, con <strong>Flower 8 en 81.2 °F</strong> y <strong>Flower 6 en 80.7 °F</strong> como los más calientes. La guía de AROYA / METER es 65 – 75 °F óptimo; por encima de 77 °F la función radicular cae materialmente. Sólo Flower 1 (72.1 °F) y Flower 5 (71.6 °F) están limpiamente dentro de la banda.</span>
         </p>
         <p class="why">
           <span lang="en">This is typically the single biggest fixable factor. No EC or VPD tuning overcomes a hot root zone. Facility-wide pattern suggests a shared HVAC / chilled-water constraint rather than room-specific issues.</span>
-          <span lang="es">Este suele ser el factor corregible más grande. Ningún ajuste de CE o VPD compensa una zona radicular caliente. El patrón en toda la instalación sugiere una restricción compartida de HVAC / agua enfriada en lugar de problemas por sala.</span>
+          <span lang="es">Este suele ser el factor corregible más grande. Ningún ajuste de CE o VPD compensa una zona radicular caliente. El patrón en toda la instalación sugiere una restricción compartida de HVAC / agua enfriada en lugar de problemas por cuarto.</span>
         </p>
       </div>
     </div>
@@ -2438,14 +2546,14 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <div class="finding warn">
       <div class="finding__icon">△</div>
       <div>
-        <h4><span lang="en">Pore EC below bulking band in 6 of 10 rooms</span><span lang="es">CE de poro por debajo de la banda de engorde en 6 de 10 salas</span></h4>
+        <h4><span lang="en">Pore EC below bulking band in 6 of 10 rooms</span><span lang="es">CE de poro por debajo de la banda de engorde en 6 de 10 cuartos</span></h4>
         <p>
           <span lang="en">The mid-flower bulking target is <strong>6 – 8 mS/cm</strong>. Flower 5 (3.33), Flower 2 (4.14), Flower 4 (4.20), Flower 9 (4.46), Flower 1 (4.85), and Flower 3 (5.12) are all under-fed relative to that band. Flower 6 (6.13), Flower 7 (6.09), Flower 8 (5.16), and Flower 0 (6.68) are closer, with Flower 0 sitting right in-band.</span>
           <span lang="es">El objetivo de engorde en floración media es <strong>6 – 8 mS/cm</strong>. Flower 5 (3.33), Flower 2 (4.14), Flower 4 (4.20), Flower 9 (4.46), Flower 1 (4.85) y Flower 3 (5.12) están sub-alimentadas. Flower 6 (6.13), Flower 7 (6.09), Flower 8 (5.16) y Flower 0 (6.68) están más cerca, con Flower 0 justo en banda.</span>
         </p>
         <p class="why">
           <span lang="en">Under-EC during bulking costs dry weight — nutrients are the limiting factor on yield when water and light aren't. Worth confirming whether the lower-EC rooms are in early flower (stretch phase, 3 – 5 mS/cm appropriate) or genuinely under-fed bulking rooms.</span>
-          <span lang="es">CE baja durante engorde cuesta peso seco — los nutrientes son el factor limitante cuando agua y luz no lo son. Vale confirmar si las salas con CE más baja están en floración temprana (fase de estiramiento, 3 – 5 mS/cm apropiado) o son salas de engorde genuinamente sub-alimentadas.</span>
+          <span lang="es">CE baja durante engorde cuesta peso seco — los nutrientes son el factor limitante cuando agua y luz no lo son. Vale confirmar si los cuartos con CE más baja están en floración temprana (fase de estiramiento, 3 – 5 mS/cm apropiado) o son cuartos de engorde genuinamente sub-alimentados.</span>
         </p>
       </div>
     </div>
@@ -2453,14 +2561,14 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <div class="finding warn">
       <div class="finding__icon">△</div>
       <div>
-        <h4><span lang="en">RH trending humid-and-warm in the top 4 rooms</span><span lang="es">HR con tendencia húmeda y cálida en las 4 salas principales</span></h4>
+        <h4><span lang="en">RH trending humid-and-warm in the top 4 rooms</span><span lang="es">HR con tendencia húmeda y cálida en los 4 cuartos principales</span></h4>
         <p>
           <span lang="en">Flower 6 (72.2 %), Flower 0 (72.1 %), Flower 7 (70.1 %), and Flower 8 (69.8 %) all sit <strong>5 – 7 points above the 65 % bulking ceiling</strong>. Combined with their 78 – 82 °F air temps and already-warm substrate, the envelope is pushing the margins before botrytis risk. VPD stays in band only because temperature and humidity are rising together.</span>
           <span lang="es">Flower 6 (72.2 %), Flower 0 (72.1 %), Flower 7 (70.1 %) y Flower 8 (69.8 %) están <strong>5 – 7 puntos sobre el techo de 65 %</strong>. Combinado con 78 – 82 °F de aire y sustrato ya cálido, la envolvente está empujando los márgenes antes del riesgo de botrytis. El VPD se mantiene en banda sólo porque temperatura y humedad suben juntas.</span>
         </p>
         <p class="why">
           <span lang="en">Dehumidification capacity in these rooms is the likely choke point. The cleaner-climate rooms (Flower 1 at 53.8 % RH, Flower 4 at 56.5 %) are a useful internal control — whatever they're doing different, replicate it.</span>
-          <span lang="es">La capacidad de deshumidificación en estas salas es probablemente el cuello de botella. Las salas con clima más limpio (Flower 1 con 53.8 % HR, Flower 4 con 56.5 %) son un control interno útil — lo que sea que estén haciendo distinto, replicarlo.</span>
+          <span lang="es">La capacidad de deshumidificación en estos cuartos es probablemente el cuello de botella. Los cuartos con clima más limpio (Flower 1 con 53.8 % HR, Flower 4 con 56.5 %) son un control interno útil — lo que sea que estén haciendo distinto, replicarlo.</span>
         </p>
       </div>
     </div>
@@ -2471,7 +2579,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         <h4><span lang="en">Flower 5 VWC peak of 93 % is implausible</span><span lang="es">El pico de VWC de 93 % en Flower 5 es inverosímil</span></h4>
         <p>
           <span lang="en">Rockwool and coco max out around 70 – 75 % VWC. A 93 % peak suggests either a sensor installed in standing water, a calibration issue, or a single rogue zone dragging the room-max. Other metrics in Flower 5 look healthy (air temp 72.6 °F, VPD 1.20, dryback 32 % — deepest in the facility). Walk the room and verify the sensor placement.</span>
-          <span lang="es">La lana de roca y el coco se saturan cerca del 70 – 75 % de VWC. Un pico del 93 % sugiere un sensor instalado en agua estancada, un problema de calibración, o una única zona fuera de control arrastrando el máximo de sala. Otras métricas de Flower 5 se ven saludables (temperatura del aire 72.6 °F, VPD 1.20, dryback 32 % — el más profundo de la instalación). Recorrer la sala y verificar la ubicación del sensor.</span>
+          <span lang="es">La lana de roca y el coco se saturan cerca del 70 – 75 % de VWC. Un pico del 93 % sugiere un sensor instalado en agua estancada, un problema de calibración, o una única zona fuera de control arrastrando el máximo del cuarto. Otras métricas de Flower 5 se ven saludables (temperatura del aire 72.6 °F, VPD 1.20, dryback 32 % — el más profundo de la instalación). Recorrer el cuarto y verificar la ubicación del sensor.</span>
         </p>
       </div>
     </div>
@@ -2482,7 +2590,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
         <h4><span lang="en">What's working</span><span lang="es">Qué está funcionando</span></h4>
         <p>
           <span lang="en"><strong>VPD is the facility's strongest signal</strong> — averaging 1.11 kPa across all 10 flower rooms, with every room sitting within 0.2 kPa of the bulking band. <strong>Dryback depth is healthy</strong> — facility median is 19.4 %, right in the 15 – 30 target. <strong>Sensor coverage is complete</strong> on all flower rooms: TEROS-15 substrate + ATMOS-14 air. Flower 1 is the facility's best-balanced room this fortnight with 74.3 °F air, 72.1 °F substrate, 53.8 % RH — use it as the internal benchmark.</span>
-          <span lang="es"><strong>El VPD es la señal más fuerte de la instalación</strong> — promediando 1.11 kPa en las 10 salas de floración, con cada sala dentro de 0.2 kPa de la banda de engorde. <strong>La profundidad de dryback es saludable</strong> — la mediana de la instalación es 19.4 %, justo en el objetivo 15 – 30. <strong>La cobertura de sensores es completa</strong> en todas las salas de floración: sustrato TEROS-15 + aire ATMOS-14. Flower 1 es la sala mejor balanceada de la instalación en esta quincena con 74.3 °F de aire, 72.1 °F de sustrato, 53.8 % HR — usarla como referencia interna.</span>
+          <span lang="es"><strong>El VPD es la señal más fuerte de la instalación</strong> — promediando 1.11 kPa en los 10 cuartos de floración, con cada cuarto dentro de 0.2 kPa de la banda de engorde. <strong>La profundidad de dryback es saludable</strong> — la mediana de la instalación es 19.4 %, justo en el objetivo 15 – 30. <strong>La cobertura de sensores es completa</strong> en todos los cuartos de floración: sustrato TEROS-15 + aire ATMOS-14. Flower 1 es el cuarto mejor balanceado de la instalación en esta quincena con 74.3 °F de aire, 72.1 °F de sustrato, 53.8 % HR — usarlo como referencia interna.</span>
         </p>
       </div>
     </div>
@@ -2498,14 +2606,14 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="num-badge">1</div>
       <div>
         <b><span lang="en">Fix the root-zone temperature in Flower 6 and Flower 8 first.</span><span lang="es">Corregir primero la temperatura radicular en Flower 6 y Flower 8.</span> <span class="rec__tag high"><span lang="en">High impact</span><span lang="es">Alto impacto</span></span></b>
-        <p><span lang="en">Both rooms are operating 5 – 6 °F above the 75 °F ceiling. Audit chilled-water or bench cooling in these rooms before looking elsewhere. Flower 1 hits 72.1 °F — confirm what's different there and replicate.</span><span lang="es">Ambas salas operan 5 – 6 °F sobre el límite de 75 °F. Auditar agua enfriada o enfriamiento de mesa antes de buscar en otro lado. Flower 1 alcanza 72.1 °F — confirmar qué es diferente ahí y replicar.</span></p>
+        <p><span lang="en">Both rooms are operating 5 – 6 °F above the 75 °F ceiling. Audit chilled-water or bench cooling in these rooms before looking elsewhere. Flower 1 hits 72.1 °F — confirm what's different there and replicate.</span><span lang="es">Ambos cuartos operan 5 – 6 °F sobre el límite de 75 °F. Auditar agua enfriada o enfriamiento de mesa antes de buscar en otro lado. Flower 1 alcanza 72.1 °F — confirmar qué es diferente ahí y replicar.</span></p>
       </div>
     </div>
     <div class="rec">
       <div class="num-badge">2</div>
       <div>
         <b><span lang="en">Raise bulking EC in Flower 5, 2, 4, 9 to 6 – 7 mS/cm.</span><span lang="es">Subir la CE de engorde en Flower 5, 2, 4, 9 a 6 – 7 mS/cm.</span> <span class="rec__tag high"><span lang="en">High impact</span><span lang="es">Alto impacto</span></span></b>
-        <p><span lang="en">Confirm whether these rooms are still in stretch (EC 3 – 5 ok) or should be bulking (EC 6 – 8). If the latter, lift feed EC and reduce shot frequency to let pore EC climb into band.</span><span lang="es">Confirmar si estas salas aún están en estiramiento (CE 3 – 5 ok) o deberían estar en engorde (CE 6 – 8). Si es lo segundo, subir la CE de alimentación y reducir frecuencia de riego.</span></p>
+        <p><span lang="en">Confirm whether these rooms are still in stretch (EC 3 – 5 ok) or should be bulking (EC 6 – 8). If the latter, lift feed EC and reduce shot frequency to let pore EC climb into band.</span><span lang="es">Confirmar si estos cuartos aún están en estiramiento (CE 3 – 5 ok) o deberían estar en engorde (CE 6 – 8). Si es lo segundo, subir la CE de alimentación y reducir frecuencia de riego.</span></p>
       </div>
     </div>
     <div class="rec">
@@ -2518,7 +2626,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
     <div class="rec">
       <div class="num-badge">4</div>
       <div>
-        <b><span lang="en">Dry out the top-4 humid rooms (Flower 6, 0, 7, 8).</span><span lang="es">Secar las 4 salas más húmedas (Flower 6, 0, 7, 8).</span> <span class="rec__tag med"><span lang="en">Medium impact</span><span lang="es">Impacto medio</span></span></b>
+        <b><span lang="en">Dry out the top-4 humid rooms (Flower 6, 0, 7, 8).</span><span lang="es">Secar los 4 cuartos más húmedos (Flower 6, 0, 7, 8).</span> <span class="rec__tag med"><span lang="en">Medium impact</span><span lang="es">Impacto medio</span></span></b>
         <p><span lang="en">Pull 5 – 7 % RH by stepping up dehumidifier setpoints or reducing irrigation frequency — the VPD band is already at the loose end of acceptable.</span><span lang="es">Bajar 5 – 7 % de HR subiendo setpoints de deshumidificador o reduciendo frecuencia de riego — la banda de VPD ya está en el extremo flojo de lo aceptable.</span></p>
       </div>
     </div>
@@ -2526,7 +2634,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
       <div class="num-badge">5</div>
       <div>
         <b><span lang="en">Close out stale harvest-group entries in AROYA.</span><span lang="es">Cerrar entradas antiguas de grupo de cosecha en AROYA.</span> <span class="rec__tag low"><span lang="en">Ops</span><span lang="es">Operativa</span></span></b>
-        <p><span lang="en">25+ runs show '[Harvest missing]' in the web UI — many dated 2023 / 2024. Cleaning these out unblocks proper HG-to-room analytics and makes future reports auto-reference correctly.</span><span lang="es">25+ corridas muestran '[Harvest missing]' en la interfaz web — muchas datadas en 2023 / 2024. Limpiarlas habilita analítica adecuada de HG-a-sala y hace que los reportes futuros se refieran correctamente.</span></p>
+        <p><span lang="en">25+ runs show '[Harvest missing]' in the web UI — many dated 2023 / 2024. Cleaning these out unblocks proper HG-to-room analytics and makes future reports auto-reference correctly.</span><span lang="es">25+ corridas muestran '[Harvest missing]' en la interfaz web — muchas datadas en 2023 / 2024. Limpiarlas habilita analítica adecuada de HG-a-cuarto y hace que los reportes futuros se refieran correctamente.</span></p>
       </div>
     </div>
   </div>
@@ -2535,10 +2643,10 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
   <h2 class="h1"><span lang="en">Methodology &amp; caveats</span><span lang="es">Metodología y advertencias</span></h2>
 
   <ul class="clean">
-    <li><b><span lang="en">Data source</span><span lang="es">Fuente de datos</span></b><span><span lang="en">AROYA public API · facility 3364 · 10 flower rooms · 14-day window 2026-04-07 → 2026-04-21 · 48-hour chart windows stitched in 7 slices per room · hourly-binned.</span><span lang="es">API pública de AROYA · instalación 3364 · 10 salas de floración · ventana 14 días 2026-04-07 → 2026-04-21 · ventanas de gráfica de 48 horas unidas en 7 rebanadas por sala · bins horarios.</span></span></li>
+    <li><b><span lang="en">Data source</span><span lang="es">Fuente de datos</span></b><span><span lang="en">AROYA public API · facility 3364 · 10 flower rooms · 14-day window 2026-04-07 → 2026-04-21 · 48-hour chart windows stitched in 7 slices per room · hourly-binned.</span><span lang="es">API pública de AROYA · instalación 3364 · 10 cuartos de floración · ventana 14 días 2026-04-07 → 2026-04-21 · ventanas de gráfica de 48 horas unidas en 7 rebanadas por cuarto · bins horarios.</span></span></li>
     <li><b><span lang="en">Device inventory</span><span lang="es">Inventario de dispositivos</span></b><span><span lang="en">385 devices: 167 nodes, 122 TEROS-12 (no EC), 43 TEROS-15 (with EC), 30 repeaters, 16 ATMOS-14, 3 ES-2.</span><span lang="es">385 dispositivos: 167 nodos, 122 TEROS-12 (sin CE), 43 TEROS-15 (con CE), 30 repetidores, 16 ATMOS-14, 3 ES-2.</span></span></li>
     <li><b><span lang="en">Targets used</span><span lang="es">Objetivos usados</span></b><span><span lang="en">Mid-flower / bulking crop-steering targets (AROYA canonical, LED, soilless).</span><span lang="es">Objetivos de crop-steering de floración media / engorde (canónicos AROYA, LED, sin suelo).</span></span></li>
-    <li><b><span lang="en">Scoring method</span><span lang="es">Método de evaluación</span></b><span><span lang="en">Each room scored on 7 traits (air temp, VPD, RH, substrate temp, pore EC, peak VWC, dryback median). 'ok' = inside target band; 'warn' = within 10 %; 'bad' = outside 10 % tolerance.</span><span lang="es">Cada sala evaluada en 7 métricas (temp aire, VPD, HR, temp sustrato, CE poro, VWC pico, mediana de dryback). 'ok' = dentro de banda; 'warn' = dentro del 10 %; 'bad' = fuera del 10 % de tolerancia.</span></span></li>
+    <li><b><span lang="en">Scoring method</span><span lang="es">Método de evaluación</span></b><span><span lang="en">Each room scored on 7 traits (air temp, VPD, RH, substrate temp, pore EC, peak VWC, dryback median). 'ok' = inside target band; 'warn' = within 10 %; 'bad' = outside 10 % tolerance.</span><span lang="es">Cada cuarto evaluada en 7 métricas (temp aire, VPD, HR, temp sustrato, CE poro, VWC pico, mediana de dryback). 'ok' = dentro de banda; 'warn' = dentro del 10 %; 'bad' = fuera del 10 % de tolerancia.</span></span></li>
     <li><b><span lang="en">Harvest groups</span><span lang="es">Grupos de cosecha</span></b><span><span lang="en">Only 3 currently-growing harvest groups are confirmed (planted 2026-02 or later).</span><span lang="es">Sólo 3 grupos de cosecha actualmente en crecimiento están confirmados (plantados 2026-02 o después).</span></span></li>
     <li><b><span lang="en">Irrigation cadence</span><span lang="es">Cadencia de riego</span></b><span><span lang="en">Dryback depth is substrate-derived (peak-to-low by zone, per day) and remains reliable across the 2-week window.</span><span lang="es">La profundidad de dryback se deriva del sustrato (pico-a-mínimo por zona, por día) y se mantiene confiable en la ventana de 2 semanas.</span></span></li>
     <li><b><span lang="en">Photoperiod split</span><span lang="es">Separación por fotoperíodo</span></b><span><span lang="en">Only Flower 0, 5, 6 have PPFD coverage from ES-2 sensors — for those three we detect lights-on hours (10 – 11 UTC → 19 – 20 UTC, consistent with 12/12 flowering schedules).</span><span lang="es">Sólo Flower 0, 5, 6 tienen cobertura de PPFD de sensores ES-2 — para esas tres detectamos horas de luz (10 – 11 UTC → 19 – 20 UTC, consistente con horarios de floración 12/12).</span></span></li>
@@ -2546,7 +2654,7 @@ body.theme-dark .foot .brand-mark { color: var(--aroya-lime); }
 
   <footer class="foot">
     <div><span lang="en">Generated 21 Apr 2026 · AROYA public API</span><span lang="es">Generado 21 Abr 2026 · API pública de AROYA</span> · <span class="brand-mark">AROYA by Addium</span></div>
-    <div><span lang="en">10 flower rooms · 55 substrate zones · 2-week window</span><span lang="es">10 salas de floración · 55 zonas de sustrato · ventana 2 semanas</span></div>
+    <div><span lang="en">10 flower rooms · 55 substrate zones · 2-week window</span><span lang="es">10 cuartos de floración · 55 zonas de sustrato · ventana 2 semanas</span></div>
   </footer>
 
 </div>
