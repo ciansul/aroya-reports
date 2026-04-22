@@ -582,96 +582,102 @@ body.theme-dark .zone.bad::before  { background: var(--error-fg); }
   padding: var(--s-4) 0;
 }
 
-/* CHART INTERNALS — high-contrast, bold, theme-aware (light + dark) */
-/* Plot background: a slightly recessed window, distinct from card surface */
-.mc-plotbg              { fill: #ffffff; stroke: #d9d6cf; stroke-width: 1; }
-body.theme-dark .mc-plotbg { fill: #0f1620; stroke: #3a4a5c; }
+/* CHART INTERNALS — Tufte-minimal, high contrast, bright accent colors.
+   Three-layer rule: (1) neutral plot bg, (2) neutral target band with BOLD bright edges,
+   (3) bold black/white data line + saturated state-colored avg ref line. */
 
-/* Gridlines: visible but quiet */
-.mc-grid                { stroke: #c9c6bf; stroke-width: 1; }
-body.theme-dark .mc-grid { stroke: #364658; }
+/* Plot background — neutral, NEVER tinted with brand color (so band + line read clean). */
+.mc-plotbg              { fill: #ffffff; stroke: #cfcdc6; stroke-width: 1.25; }
+body.theme-dark .mc-plotbg { fill: #0a1018; stroke: #44546a; }
 
-/* Axes: bold, fully opaque */
-.mc-axis                { stroke: #1a1c19; stroke-width: 1.5; }
-body.theme-dark .mc-axis { stroke: #e6eaee; }
+/* Gridlines — quiet so they don't fight with axes */
+.mc-grid                { stroke: #ececea; stroke-width: 1; }
+body.theme-dark .mc-grid { stroke: #1f2a38; }
 
-/* Tick labels: high contrast, medium weight, monospace tabular */
+/* Axes — bold and unambiguous */
+.mc-axis                { stroke: #1a1c19; stroke-width: 1.75; }
+body.theme-dark .mc-axis { stroke: #ffffff; }
+
+/* Tick labels — pure fg, slightly larger and weightier than before */
 .mc-tick-label {
-  fill: #1a1c19; font-size: 12px; font-weight: 500;
+  fill: #1a1c19; font-size: 12px; font-weight: 600;
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   font-variant-numeric: tabular-nums;
 }
-body.theme-dark .mc-tick-label { fill: #e6eaee; }
+body.theme-dark .mc-tick-label { fill: #ffffff; }
 
-/* Target band: BRIGHT lime in light, brighter on dark; edges drawn separately */
-.mc-band-fill           { fill: #cbeeb0; opacity: 0.55; }
-body.theme-dark .mc-band-fill { fill: #cbeeb0; opacity: 0.18; }
+/* TARGET BAND — neutral fill (no green wash). Brand identity sits in the bold edge lines only.
+   This is the key change: the band no longer obscures the data line. */
+.mc-band-fill           { fill: #f0eee9; opacity: 1; }
+body.theme-dark .mc-band-fill { fill: #16202c; opacity: 1; }
 
-/* Target band edges: solid bright olive/lime so the range is unambiguous */
-.mc-band-edge           { stroke: #4a7c2a; stroke-width: 1.5; stroke-dasharray: 4 3; }
-body.theme-dark .mc-band-edge { stroke: #cbeeb0; }
+/* Target band edges — SATURATED bright green so the range is unmistakable */
+.mc-band-edge           { stroke: #2e7d2e; stroke-width: 2.5; stroke-dasharray: none; }
+body.theme-dark .mc-band-edge { stroke: #8ee168; stroke-width: 2.5; }
 
-/* Target band label chip */
-.mc-band-label-bg       { fill: #ffffff; stroke: #4a7c2a; stroke-width: 1; opacity: 0.95; }
-body.theme-dark .mc-band-label-bg { fill: #1c2632; stroke: #cbeeb0; }
+/* Target band label pill — bright green chip with white text (light) / lime chip with dark text (dark) */
+.mc-band-label-bg       { fill: #2e7d2e; stroke: none; }
+body.theme-dark .mc-band-label-bg { fill: #8ee168; }
 .mc-band-label {
-  fill: #2d4f17; font-size: 11px; font-weight: 600;
+  fill: #ffffff; font-size: 11px; font-weight: 700;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.02em;
 }
-body.theme-dark .mc-band-label { fill: #cbeeb0; }
+body.theme-dark .mc-band-label { fill: #0a1018; }
 
-/* DATA LINE — boldest element on the chart */
+/* DATA LINE — DOMINANT element. Pure black (light) / pure white (dark), 3.5px bold */
 .mc-line {
-  fill: none; stroke: #1a1c19; stroke-width: 3;
+  fill: none; stroke: #000000; stroke-width: 3.5;
   stroke-linecap: round; stroke-linejoin: round;
 }
 body.theme-dark .mc-line { stroke: #ffffff; }
 
-/* Data points */
+/* Data points — small filled dots, white-rimmed so they read on top of the line */
 .mc-point {
-  fill: #ffffff; stroke: #1a1c19; stroke-width: 2;
+  fill: #000000; stroke: #ffffff; stroke-width: 2;
 }
-body.theme-dark .mc-point { fill: #1c2632; stroke: #ffffff; }
+body.theme-dark .mc-point { fill: #ffffff; stroke: #0a1018; }
 
-/* Last-point emphasis with state color */
-.mc-point-last      { stroke: #ffffff; stroke-width: 2; }
-.mc-point-last.ok   { fill: #2e7d2e; }
-.mc-point-last.warn { fill: #c69b00; }
-.mc-point-last.bad  { fill: #c0392b; }
-.mc-point-last.na   { fill: #1a1c19; }
-body.theme-dark .mc-point-last      { stroke: #1c2632; }
-body.theme-dark .mc-point-last.ok   { fill: #cbeeb0; }
-body.theme-dark .mc-point-last.warn { fill: #f1c64a; }
-body.theme-dark .mc-point-last.bad  { fill: #ef8c8c; }
-body.theme-dark .mc-point-last.na   { fill: #e6eaee; }
+/* Last-point emphasis — large filled circle in BRIGHT saturated state color */
+.mc-point-last      { stroke: #ffffff; stroke-width: 2.5; }
+.mc-point-last.ok   { fill: #1a8a1a; }
+.mc-point-last.warn { fill: #f08c00; }
+.mc-point-last.bad  { fill: #dc2626; }
+.mc-point-last.na   { fill: #000000; }
+body.theme-dark .mc-point-last      { stroke: #0a1018; }
+body.theme-dark .mc-point-last.ok   { fill: #8ee168; }
+body.theme-dark .mc-point-last.warn { fill: #ffc94a; }
+body.theme-dark .mc-point-last.bad  { fill: #ff6464; }
+body.theme-dark .mc-point-last.na   { fill: #ffffff; }
 
-/* Avg reference line — dashed, state-colored, BOLD */
-.mc-avg-line        { fill: none; stroke-width: 2; stroke-dasharray: 6 4; }
-.mc-avg-line.ok     { stroke: #2e7d2e; }
-.mc-avg-line.warn   { stroke: #c69b00; }
-.mc-avg-line.bad    { stroke: #c0392b; }
+/* Avg reference line — BRIGHT, dashed, BOLD 2.5px state-colored */
+.mc-avg-line        { fill: none; stroke-width: 2.5; stroke-dasharray: 7 5; stroke-linecap: round; }
+.mc-avg-line.ok     { stroke: #1a8a1a; }
+.mc-avg-line.warn   { stroke: #f08c00; }
+.mc-avg-line.bad    { stroke: #dc2626; }
 .mc-avg-line.na     { stroke: #6e6a60; }
-body.theme-dark .mc-avg-line.ok   { stroke: #cbeeb0; }
-body.theme-dark .mc-avg-line.warn { stroke: #f1c64a; }
-body.theme-dark .mc-avg-line.bad  { stroke: #ef8c8c; }
+body.theme-dark .mc-avg-line.ok   { stroke: #8ee168; }
+body.theme-dark .mc-avg-line.warn { stroke: #ffc94a; }
+body.theme-dark .mc-avg-line.bad  { stroke: #ff6464; }
 body.theme-dark .mc-avg-line.na   { stroke: #b8c2cf; }
 
-/* Avg chip: solid pill behind the avg-value text so the number always reads */
-.mc-avg-chip            { stroke-width: 1; }
-.mc-avg-chip.ok         { fill: #2e7d2e; stroke: #1d5a1d; }
-.mc-avg-chip.warn       { fill: #c69b00; stroke: #8a6c00; }
-.mc-avg-chip.bad        { fill: #c0392b; stroke: #8a2820; }
-.mc-avg-chip.na         { fill: #1a1c19; stroke: #1a1c19; }
-body.theme-dark .mc-avg-chip.ok   { fill: #cbeeb0; stroke: #cbeeb0; }
-body.theme-dark .mc-avg-chip.warn { fill: #f1c64a; stroke: #f1c64a; }
-body.theme-dark .mc-avg-chip.bad  { fill: #ef8c8c; stroke: #ef8c8c; }
-body.theme-dark .mc-avg-chip.na   { fill: #e6eaee; stroke: #e6eaee; }
+/* Avg chip — solid pill, bright state color, white text (light) / dark text (dark) */
+.mc-avg-chip            { stroke: none; }
+.mc-avg-chip.ok         { fill: #1a8a1a; }
+.mc-avg-chip.warn       { fill: #f08c00; }
+.mc-avg-chip.bad        { fill: #dc2626; }
+.mc-avg-chip.na         { fill: #000000; }
+body.theme-dark .mc-avg-chip.ok   { fill: #8ee168; }
+body.theme-dark .mc-avg-chip.warn { fill: #ffc94a; }
+body.theme-dark .mc-avg-chip.bad  { fill: #ff6464; }
+body.theme-dark .mc-avg-chip.na   { fill: #ffffff; }
 .mc-avg-chip-label {
-  fill: #ffffff; font-size: 11px; font-weight: 700;
+  fill: #ffffff; font-size: 11px; font-weight: 800;
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
-body.theme-dark .mc-avg-chip-label { fill: #0f1620; }
+body.theme-dark .mc-avg-chip-label { fill: #0a1018; }
 
 /* FINDINGS */
 .findings { display: flex; flex-direction: column; gap: var(--s-3); }
