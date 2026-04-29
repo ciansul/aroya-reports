@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vangarden — 2-Week Cultivation Report — 2026-04-28</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:#f5f7fb; --panel:#ffffff; --panel2:#eef2f9; --ink:#1c2632; --muted:#5b6a7d;
+    --ok:#1e8e54; --warn:#c08a1e; --bad:#c04030; --crit:#a01b2e; --info:#2d62ff;
+    --line:#d9e0ec;
+    --olive:#635e51; --lime:#8aab4a; --app-blue:#1c2632;
+  }
+  * { box-sizing: border-box; }
+  html,body { margin:0; padding:0; background:var(--bg); color:var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Arial, sans-serif;
+    line-height:1.48; }
+  a { color: var(--info); }
+  header { padding: 28px 32px 18px; border-bottom:1px solid var(--line);
+    background: linear-gradient(180deg,#ffffff,#f5f7fb); border-bottom-color:#d9e0ec; }
+  header h1 { margin:0 0 4px; font-size: 26px; letter-spacing:.2px; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  main { padding: 22px 32px 80px; max-width: 1380px; margin: 0 auto; }
+  section { margin: 28px 0 34px; }
+  h2 { font-size: 18px; margin: 0 0 10px; letter-spacing:.3px; }
+  h3 { font-size: 15px; margin: 18px 0 8px; color:#36475e; }
+  p { color:#1c2632; margin: 6px 0 12px; }
+  .muted { color: var(--muted); }
+  .grid { display:grid; gap:14px; }
+  .cards { grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .card .big { font-size: 28px; font-weight: 700; letter-spacing:.5px; }
+  .card .lbl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing:.8px; }
+  .card.crit { border-left: 4px solid var(--crit); background: linear-gradient(90deg, #fbe6ea 0%, var(--panel) 30%); }
+  .card.warn { border-left: 4px solid var(--warn); background: linear-gradient(90deg, #fcf3e0 0%, var(--panel) 30%); }
+  .card.ok   { border-left: 4px solid var(--ok); }
+  table { width:100%; border-collapse: collapse; font-size: 13px; }
+  th,td { padding: 9px 10px; text-align:left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--panel2); color:#36475e; font-weight:600; position: sticky; top: 0; }
+  tr:hover td { background:#f3f6fc; }
+  .pill { display:inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight:600; letter-spacing:.4px; }
+  .pill.ok    { background: rgba(46,204,113,.16); color: var(--ok); }
+  .pill.warn  { background: rgba(246,200,95,.18); color: var(--warn); }
+  .pill.bad   { background: rgba(255,107,107,.18); color: var(--bad); }
+  .pill.crit  { background: rgba(215,38,61,.22); color: #ffb3be; }
+  .pill.empty { background: rgba(159,176,204,.18); color: var(--muted); }
+  .pill.info  { background: rgba(94,169,255,.18); color: var(--info); }
+  .pill.olive { background: rgba(139,168,122,.18); color: var(--olive); }
+  .pill.lime  { background: rgba(199,234,107,.18); color: var(--lime); }
+  .box {
+    background: var(--panel); border-left: 3px solid var(--info); border-radius: 6px;
+    padding: 12px 16px; margin: 10px 0;
+  }
+  .box.warn { border-left-color: var(--warn); }
+  .box.bad  { border-left-color: var(--crit); background: linear-gradient(90deg,#fbe6ea,#ffffff 30%); }
+  .box.ok   { border-left-color: var(--ok); }
+  .two-col { display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .three-col { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 840px){ .two-col,.three-col{ grid-template-columns: 1fr; } }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px;
+    background:#eef2f9; padding: 2px 6px; border-radius: 4px; color:#c9d6f7; }
+  .small { font-size: 12px; color: var(--muted); }
+  .kv { display:grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: 13px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
+  ul.tight { margin: 6px 0 12px; padding-left: 22px; }
+  ul.tight li { margin: 2px 0; }
+  .focus { border-left: 3px solid var(--crit); background:#fff5f6; padding: 14px 18px; border-radius: 8px; }
+  .crit-bar { color: var(--crit); }
+  .warn-bar { color: var(--warn); }
+  .ok-bar { color: var(--ok); }
+  nav.toc { font-size: 13px; color: var(--muted); }
+  nav.toc a { color: #2d62ff; text-decoration: none; margin-right: 14px; }
+  nav.toc a:hover { color: #fff; }
+  .meta-chip { display:inline-block; padding: 3px 9px; margin-right:6px; background: var(--panel2);
+    border-radius: 4px; color:#36475e; font-size: 11px; }
+  .delta { font-size: 11px; color: var(--muted); margin-left: 4px; }
+  .delta.pos { color: var(--bad); }
+  .delta.neg { color: var(--ok); }
+  .room-card {
+    background: linear-gradient(180deg,#ffffff,#f8fafe);
+    border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 20px 16px; margin: 18px 0;
+  }
+  .room-card.crit { border-left: 5px solid var(--crit); }
+  .room-card.warn { border-left: 5px solid var(--warn); }
+  .room-card.ok   { border-left: 5px solid var(--ok); }
+  .room-card h3 { margin: 0 0 4px; font-size: 17px; color: #1c2632; display:flex; align-items:center; gap:10px; }
+  .room-card .meta { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .room-card .chart-wrap { margin-top: 14px; height: 220px; position: relative; }
+  .metric-grid {
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 8px;
+    margin: 10px 0;
+  }
+  .metric {
+    background: rgba(255,255,255,.02); border-radius:6px; padding: 6px 10px;
+    border: 1px solid var(--line);
+  }
+  .metric .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing:.6px; }
+  .metric .val { font-size: 16px; font-weight: 600; }
+  .metric .target { font-size: 10px; color: var(--muted); }
+  .metric.ok    { border-left: 3px solid var(--ok); }
+  .metric.warn  { border-left: 3px solid var(--warn); }
+  .metric.bad   { border-left: 3px solid var(--bad); }
+  .metric.empty { border-left: 3px solid var(--muted); }
+  .stripe-crit { background: linear-gradient(90deg, var(--crit), transparent 50%); height: 3px; margin: 0 -20px 12px; }
+  .stripe-warn { background: linear-gradient(90deg, var(--warn), transparent 50%); height: 3px; margin: 0 -20px 12px; }
+  .stripe-ok   { background: linear-gradient(90deg, var(--ok), transparent 50%); height: 3px; margin: 0 -20px 12px; }
+  .verdict-grad-crit { background: linear-gradient(90deg, rgba(215,38,61,.18), rgba(215,38,61,0)); padding: 8px 12px; border-radius: 6px; }
+  .verdict-grad-warn { background: linear-gradient(90deg, rgba(246,200,95,.18), rgba(246,200,95,0)); padding: 8px 12px; border-radius: 6px; }
+  .verdict-grad-ok   { background: linear-gradient(90deg, rgba(46,204,113,.18), rgba(46,204,113,0)); padding: 8px 12px; border-radius: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Vangarden — 2-Week Cultivation Report</h1>
+  <div class="sub">Facility 4537 · Window: 2026-04-14 → 2026-04-28 (14d) · Generated 2026-04-28</div>
+  <div class="sub" style="margin-top:6px">
+    <span class="meta-chip">Compare: 2026-04-20 client report</span>
+    <span class="meta-chip">All 16 active flower rooms · 26,400+ sensor points</span>
+    <span class="meta-chip">Phase-aware scoring against AROYA LED targets</span>
+  </div>
+  <nav class="toc" style="margin-top:12px">
+    <a href="#exec">Executive summary</a>
+    <a href="#changed">What changed since 4/20</a>
+    <a href="#hot-cluster">Hot-room cluster</a>
+    <a href="#topic">Today's topic — root-zone temp</a>
+    <a href="#rooms">Room-by-room</a>
+    <a href="#carryover">Carry-overs</a>
+    <a href="#methods">Methods</a>
+  </nav>
+</header>
+<main>
+
+<section id="exec">
+  <h2>Executive summary</h2>
+  <div class="grid cards">
+    <div class="card"><div class="lbl">Active flower runs</div><div class="big">16</div>
+      <div class="small">F2-F18 (no F1 mom, no F15)</div></div>
+    <div class="card crit"><div class="lbl">Critical rooms</div><div class="big crit-bar">7</div>
+      <div class="small">Substrate ≥75°F or air ≥82°F day or VPD ≥1.7</div></div>
+    <div class="card warn"><div class="lbl">Watch rooms</div><div class="big warn-bar">8</div>
+      <div class="small">Margin warnings — see room cards</div></div>
+    <div class="card ok"><div class="lbl">In-band rooms</div><div class="big ok-bar">1</div></div>
+  </div>
+
+  <div class="box bad">
+    <strong>The headline this week:</strong>
+    <ul class="tight">
+      <li><b>Flower 6 was not resolved</b> from the 4/20 callout. Day air 81.3°F (was 81.5°F), VPD 1.7 day / 1.5 night (was 1.72), substrate avg 74.8°F max <b>76.6°F</b>, top zone EC 8.95 dS/m. The HVAC issue is now 14 days into a known-fault state. Whatever was tried, didn't land.</li>
+      <li><b>The hot-room cluster has expanded into early flower.</b> 4/20 cluster was F6/F10/F16/F18. Today every Week 1–2 room is running 80–83°F day with substrate 75–79°F:
+        <b>F8</b> D7 (82.2/82.4°F, sub max 78.5°F),
+        <b>F17</b> D5 (82.5/<b>83.3°F night</b>, sub max 78.8°F),
+        <b>F13</b> D12 (sub zone max <b>80.9°F</b>),
+        <b>F16</b> D14 (sub max 78.2°F),
+        <b>F10</b> D19 (sub max 78.1°F).
+        These rooms are in the most yield-sensitive phase (early flower, root-zone steering window) and they're being run with degraded root function. <b>This is the bigger story than F6 alone</b>.</li>
+      <li><b>Pore-EC stack is widening.</b> 4/20 flagged F12 z72540 at 10.78 dS/m. Today: F2 z72469=12.05, F12 z72538=10.17, F14 z72552=10.32, F9 z72525=10.09 — four rooms past 10 dS/m on hot-zone probes. This is a flush-or-finish decision per room, not a sensor noise issue.</li>
+      <li><b>F8 and F17 night-temp inversion.</b> Both running hotter at night than day — HVAC isn't holding setpoints in the dark cycle. With night VPD 1.6 in F17 against an early-flower target of 0.8–1.1, the plant is losing water in the dark phase when stomata should be closed. This is also new since 4/20 (those rooms were empty on 4/20).</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <strong>What's holding:</strong> Mid-flower bulking in F3, F4, F11, F18 is in-band on VPD/VWC/dryback. F9 (the prior salt-stack callout) appears to have responded — VWC came down 60.8% → 48.2%, dryback opened up to 18.9% (the deepest in the facility), and EC is climbing on schedule. The hot-spot zone (z72525) is still elevated at 10.09 — physical inspection still warranted, but the room-level steering pivot worked.
+  </div>
+
+  <div class="box ok">
+    <strong>Cleanest runs:</strong> <b>Flower 5</b> (D54 ripening, 53.9% VWC, 75.4°F day, EC 6.1) and <b>Flower 12</b> (D49 ripening, 50.4% VWC, 74.0°F day, dryback 17.4%) — both finishing inside ripening targets. <b>Flower 9</b> (post-pivot) and <b>Flower 14</b> (D47, 74.6°F, dryback 15.5%) also clean.
+  </div>
+</section>
+
+<section id="changed">
+  <h2>What changed vs the 2026-04-20 report</h2>
+  <p class="small">Direct comparison against the snapshot that went into the 4/20 client meeting (Bryan Gay · G. Morales · E. Kokkennen). Numbers are 24h facility averages then vs 14-day day-mean now — directionally correct, not apples-to-apples on window length.</p>
+  <table>
+    <thead><tr>
+      <th>Room</th><th>Phase now</th><th>Air temp (°F)</th><th>VPD (kPa)</th><th>VWC (%)</th><th>What moved</th>
+    </tr></thead>
+    <tbody>
+<tr><td><b>Flower 2</b><br><span class='small'>D55</span></td><td>Week 8 Generative</td><td>74.8 <span class='delta pos'>(+1.1)</span></td><td>1.31 <span class='delta pos'>(+0.18)</span></td><td>50.4% <span class='delta neg'>(-3.1)</span></td><td class='small'>F2 ran into late ripening. Pore_EC z72469 climbed to 12.05 — extreme. Either intentional finish or salt stack on a probe.</td></tr>
+<tr><td><b>Flower 3</b><br><span class='small'>D28</span></td><td>Bulking/Vegetative 2</td><td>79.5 <span class='delta pos'>(+2.6)</span></td><td>1.41 <span class='delta pos'>(+0.07)</span></td><td>48.4% <span class='delta neg'>(-5.4)</span></td><td class='small'>F3 hotter (+1.7°F). EC climbing on schedule. VPD slightly above target — fine for late bulking.</td></tr>
+<tr><td><b>Flower 4</b><br><span class='small'>D40</span></td><td>Bulking/Vegetative 2</td><td>77.4 <span class='delta pos'>(+0.4)</span></td><td>1.09 <span class='delta pos'>(+0.05)</span></td><td>47.2% <span class='delta pos'>(+10.4)</span></td><td class='small'>F4 more in-band; cooled slightly. EC 5.3 — on track for ripening handoff.</td></tr>
+<tr><td><b>Flower 5</b><br><span class='small'>D54</span></td><td>Ripening/Generative 2</td><td>75.4 <span class='delta neg'>(-0.2)</span></td><td>1.37 <span class='delta neg'>(-0.02)</span></td><td>53.9% <span class='delta pos'>(+15.9)</span></td><td class='small'><b>F5 reset.</b> 4/20 was 38% VWC late flower; today 53.9% suggests a new flip happened mid-window. Verify plant ID.</td></tr>
+<tr><td><b>Flower 6</b><br><span class='small'>D39</span></td><td>Bulking/Vegetative 2</td><td>81.3 <span class='delta neg'>(-0.2)</span></td><td>1.66 <span class='delta neg'>(-0.06)</span></td><td>50.6% <span class='delta pos'>(+15.3)</span></td><td class='small'><b>F6: NOT RESOLVED.</b> Air avg 81.3°F day vs 81.5 (worse if anything), VPD 1.7 day, sub max 76.6°F. EC stack persists.</td></tr>
+<tr><td><b>Flower 7</b><br><span class='small'>D42</span></td><td>Week 6 Generative</td><td>80.4 <span class='delta pos'>(+5.6)</span></td><td>1.53 <span class='delta pos'>(+0.47)</span></td><td>51.0% <span class='delta pos'>(+1.6)</span></td><td class='small'>F7 hotter (+5.6°F day) but VPD held — this likely tracks lights-on photoperiod shift. Check lights schedule.</td></tr>
+<tr><td><b>Flower 8</b><br><span class='small'>D7</span></td><td>Week 1 Generative</td><td>82.2 <span class='delta pos'>(+9.7)</span></td><td>1.39 <span class='delta pos'>(+0.55)</span></td><td>37.7% <span class='delta pos'>(+35.3)</span></td><td class='small'><b>F8 NEW FLIP</b> 4/21. Currently running 82.2/82.4°F (no DIF) and substrate 77–78.5°F in Week 1.</td></tr>
+<tr><td><b>Flower 9</b><br><span class='small'>D40</span></td><td>Bulking/Vegetative 2</td><td>76.3 <span class='delta pos'>(+1.3)</span></td><td>1.19 <span class='delta pos'>(+0.30)</span></td><td>48.2% <span class='delta neg'>(-12.5)</span></td><td class='small'><b>F9 GENERATIVE TAP LANDED.</b> VWC 60.8 → 48.2, dryback opened 18.9% (best in facility), EC up. Hot-spot still hot.</td></tr>
+<tr><td><b>Flower 10</b><br><span class='small'>D19</span></td><td>Week 2 Generative</td><td>80.2 <span class='delta pos'>(+0.0)</span></td><td>1.52 <span class='delta pos'>(+0.10)</span></td><td>40.8% <span class='delta pos'>(+12.2)</span></td><td class='small'>F10 hot (sub max 78.1°F). VPD/VWC ratchet correctly — but sub temp limits everything.</td></tr>
+<tr><td><b>Flower 11</b><br><span class='small'>D21</span></td><td>Bulking/Vegetative 2</td><td>79.5 <span class='delta pos'>(+1.6)</span></td><td>1.31 <span class='delta neg'>(-0.16)</span></td><td>44.2% <span class='delta neg'>(-1.1)</span></td><td class='small'>F11 steady; D21 in late veg-phase irrigation. Sub max 75.8°F at the threshold.</td></tr>
+<tr><td><b>Flower 12</b><br><span class='small'>D49</span></td><td>Ripening/Generative 2</td><td>74.0 <span class='delta neg'>(-2.5)</span></td><td>1.18 <span class='delta neg'>(-0.20)</span></td><td>50.4% <span class='delta neg'>(-8.5)</span></td><td class='small'>F12 finishing ripening cleanly. EC 10.17 z72538 still in the system.</td></tr>
+<tr><td><b>Flower 13</b><br><span class='small'>D12</span></td><td>Week 1 Generative</td><td>79.2 <span class='delta pos'>(+4.1)</span></td><td>1.47 <span class='delta pos'>(+0.46)</span></td><td>44.0% <span class='delta neg'>(-1.8)</span></td><td class='small'><b>F13 NEW FLIP</b> 4/16. Sub zone max <b>80.9°F</b> in Week 1 — worst root-zone heat in the facility.</td></tr>
+<tr><td><b>Flower 14</b><br><span class='small'>D47</span></td><td>Week 6 Generative</td><td>74.6 <span class='delta neg'>(-1.9)</span></td><td>1.24 <span class='delta neg'>(-0.18)</span></td><td>50.0% <span class='delta pos'>(+16.6)</span></td><td class='small'>F14 calm late-flower. Z72552 at 10.32 EC — flush-or-finish call.</td></tr>
+<tr><td><b>Flower 16</b><br><span class='small'>D14</span></td><td>Week 2 Generative</td><td>81.6 <span class='delta pos'>(+1.1)</span></td><td>1.41 <span class='delta pos'>(+0.33)</span></td><td>42.3% <span class='delta neg'>(-0.4)</span></td><td class='small'><b>F16 NEW FLIP</b> 4/14. Sub max 78.2°F in Week 2. Early flower with degraded roots.</td></tr>
+<tr><td><b>Flower 17</b><br><span class='small'>D5</span></td><td>Week 1 Generative</td><td>82.5 <span class='delta pos'>(+6.7)</span></td><td>1.63 <span class='delta neg'>(0.00)</span></td><td>38.9% <span class='delta pos'>(+35.8)</span></td><td class='small'><b>F17 NEW FLIP</b> 4/23. Air 82.5 day / <b>83.3 night</b> — DIF reversed. Sub max 78.8°F. Hottest early flower in the facility.</td></tr>
+<tr><td><b>Flower 18</b><br><span class='small'>D26</span></td><td>Bulking/Vegetative 2</td><td>80.6 <span class='delta pos'>(+0.5)</span></td><td>1.36 <span class='delta pos'>(+0.07)</span></td><td>48.2% <span class='delta pos'>(+10.6)</span></td><td class='small'>F18 D26 still hot (sub max 77.6°F). VPD held at 1.4 — irrigation has compensated, but root temp persists.</td></tr>
+
+    </tbody>
+  </table>
+</section>
+
+<section id="hot-cluster">
+  <h2 style="color:#ffb3be">Hot-room cluster — F6, F8, F10, F13, F16, F17, F18</h2>
+  <div class="focus">
+    <p><b>The pattern:</b> Air temp ≥80°F day combined with substrate temp ≥75°F (uptake degrading) and zone substrate temps reaching 78–81°F (root-function red line). This is consistent across rooms that flipped recently AND across F6 which has been hot for a month — meaning the heat source is the rooms / their HVAC, not just the lighting load on a young canopy.</p>
+    <div class="three-col" style="margin-top:14px">
+      <div class="card crit">
+        <div class="lbl">F17 (D5 — Wk 1 Gen)</div>
+        <div class="kv">
+          <dt>Air day / night</dt><dd>82.5 / <b>83.3°F</b> · DIF -0.8 (reversed)</dd>
+          <dt>VPD day / night</dt><dd>1.6 / 1.6 — early flower target 0.7–1.1</dd>
+          <dt>Substrate avg / max</dt><dd>77.6 / <b>78.8°F</b></dd>
+          <dt>Top zone substrate</dt><dd>z72644 = <b>79.9°F</b></dd>
+          <dt>VWC / EC</dt><dd>38.9% / 2.9 (low EC ramping)</dd>
+          <dt>Plants</dt><dd>1,178</dd>
+        </div>
+        <p class="small">Hottest early-flower room. Plant has 5 days flowering in roots that are routinely 80°F. Generative-phase EC ramp (target 3.0 → 4.5 by week 3) won't land if uptake is degraded. <b>Day-1 priority.</b></p>
+      </div>
+      <div class="card crit">
+        <div class="lbl">F8 (D7 — Wk 1 Gen)</div>
+        <div class="kv">
+          <dt>Air day / night</dt><dd>82.2 / 82.4°F · DIF -0.2</dd>
+          <dt>VPD day / night</dt><dd>1.4 / 1.4</dd>
+          <dt>Substrate avg / max</dt><dd>77.4 / 78.5°F</dd>
+          <dt>Top zone substrate</dt><dd>z72481 = 79.8°F</dd>
+          <dt>VWC / EC</dt><dd>37.7% / 3.8</dd>
+          <dt>Plants</dt><dd>1,630</dd>
+        </div>
+        <p class="small">Same pattern as F17, 2 days older. Will run into stretch overshoot if not corrected — early-flower 82°F day temps push internodal length without the VPD ceiling that mid-flower can absorb.</p>
+      </div>
+      <div class="card crit">
+        <div class="lbl">F13 (D12 — Wk 1 Gen)</div>
+        <div class="kv">
+          <dt>Air day / night</dt><dd>79.2 / 79.8°F · DIF -0.6</dd>
+          <dt>VPD day / night</dt><dd>1.5 / 0.9</dd>
+          <dt>Substrate avg / max</dt><dd>75.0 / <b>79.0°F</b></dd>
+          <dt>Top zone substrate</dt><dd>z72544 = <b>80.9°F</b></dd>
+          <dt>VWC / EC</dt><dd>44.0% / 3.6</dd>
+          <dt>Plants</dt><dd>1,800</dd>
+        </div>
+        <p class="small">Worst single substrate-zone reading in the facility. Zone 72544 sits at 80.9°F — well past the 77°F red line. Worth a physical inspection of that zone (sensor placement vs heat source, dripper proximity to a duct).</p>
+      </div>
+      <div class="card warn">
+        <div class="lbl">F16 (D14 — Wk 2 Gen)</div>
+        <div class="kv">
+          <dt>Air day / night</dt><dd>81.6 / 81.7°F · DIF -0.1</dd>
+          <dt>VPD day / night</dt><dd>1.4 / 1.4</dd>
+          <dt>Substrate avg / max</dt><dd>76.8 / 78.2°F</dd>
+          <dt>VWC / EC</dt><dd>42.3% / 4.7</dd>
+          <dt>Plants</dt><dd>1,836</dd>
+        </div>
+        <p class="small">Two weeks in, hot canopy with hot roots. Dryback reading 18.1% which is good — but the steering signal is being applied to a root system running degraded.</p>
+      </div>
+      <div class="card crit">
+        <div class="lbl">F6 (D39 — Bulk/Veg2) — <span class="pill crit">UNRESOLVED</span></div>
+        <div class="kv">
+          <dt>Air day / night</dt><dd><b>81.3</b> / 79.8°F · DIF +1.5</dd>
+          <dt>VPD day / night</dt><dd><b>1.7</b> / 1.5 (target 1.0–1.2 / 0.8–1.2)</dd>
+          <dt>Substrate avg / max</dt><dd>74.8 / <b>76.6°F</b></dd>
+          <dt>EC top zone</dt><dd>z72514 = 8.95 dS/m</dd>
+          <dt>VWC / dryback</dt><dd>50.6% / 16.2%</dd>
+          <dt>Plants</dt><dd>2,064 (largest run)</dd>
+        </div>
+        <p class="small">Same room, same problem, 14 days later. The 4/20 escalation (HVAC + CO₂ + EC stack) did not produce a resolution. With the largest plant count in the facility, this is also the highest-yield-impact room.</p>
+      </div>
+      <div class="card warn">
+        <div class="lbl">F10 (D19) · F18 (D26) — chronic warm</div>
+        <div class="kv">
+          <dt>F10 air / sub max</dt><dd>80.2°F / 78.1°F</dd>
+          <dt>F18 air / sub max</dt><dd>80.6°F / 77.6°F</dd>
+        </div>
+        <p class="small">Both flagged on 4/20 and still warm two weeks later. Mid-bulking can absorb the heat for a while but EC will compress the top of the run. Both have z-level pore EC reaching 8–9 dS/m which is right at the bulking ceiling.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:18px">Pattern conclusion</h3>
+    <p>F6 + every just-flipped room running 76–79°F substrate (and one zone at 81°F) means the issue is structural. Either:</p>
+    <ul class="tight">
+      <li><b>HVAC capacity is undersized</b> for the current crop schedule (more rooms in early flower at once = more lighting heat, exceeding cooling), or</li>
+      <li><b>Return-air paths are fighting</b> with each other (the 4/20 dehumidification CapEx note is the pre-existing trail on this), or</li>
+      <li><b>Substrate-side heating</b> — drippers near radiant heat, slabs in sun, or chiller loop not balanced — only the F13 z72544 reading would localize this.</li>
+    </ul>
+    <p>The diagnostic step is: check whether the air-temp setpoint on the BMS / Argus matches what AROYA's H421 sees. The 4/20 carry-over flagged a possible Argus-vs-AROYA mismatch in Flower 6; if that 6°F mismatch exists in F6 it likely exists facility-wide.</p>
+  </div>
+</section>
+
+<section id="topic">
+  <h2>Today's topic — root-zone temperature is the yield ceiling</h2>
+  <p>This is a different story than 4/20's "generative pivot mid-cycle." That conversation was about steering the plant. <b>This one's about whether the plant can do anything with the steering at all.</b></p>
+
+  <h3>The biology, briefly</h3>
+  <ul class="tight">
+    <li><b>65–75°F substrate</b> is the root-function plateau. Nutrient uptake, root respiration, water transport — all running at design.</li>
+    <li><b>75–77°F</b> — uptake of K, Mg, Ca starts degrading. The plant can still flower but salt stack risk rises (more EC at the probe than the plant is actually drinking).</li>
+    <li><b>≥77°F</b> — root function meaningfully degraded. Pythium / fungal risk rises if there's any moisture in the wrong place. EC rapidly decouples from what the plant takes up.</li>
+    <li><b>≥80°F</b> — the root system is in damage mode. Most cultivars show stunted lateral growth, bronzing, loss of internode pull-down.</li>
+  </ul>
+
+  <h3>Why early flower is the worst place to have this</h3>
+  <p>Early flower is when the plant is supposed to receive the generative signal — fewer / larger irrigation shots, EC ramping from 3 → 6, substrate concentration intentionally rising. The plant tolerates this because root function is full-throttle. <b>If roots are at 78°F, the EC ramp that's supposed to drive the bulking-phase reservoir instead just stacks at the probe</b>. Six weeks later you read 8 dS/m at the sensor and say "EC is on schedule" — but the plant only got 6.</p>
+
+  <h3>What to do this week (if HVAC remediation is multi-week)</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="lbl">Operational mitigations (3–7 days)</div>
+      <ul class="tight">
+        <li><b>Check Argus / BMS reading vs AROYA H421</b> in F6, F8, F13, F16, F17. If AROYA reads 6°F higher than the BMS, the HVAC isn't being asked to cool to the right setpoint.</li>
+        <li><b>Drop night setpoint 2°F</b> in the early-flower rooms. Even if HVAC can't hold it, it'll buy a 1°F real drop — and reverse the night-hotter inversion in F8/F17.</li>
+        <li><b>Push P1 earlier</b> in early-flower rooms. A larger AM shot at lights-on cools the substrate via evaporation and resets the dryback ceiling before the room heats up.</li>
+        <li><b>Cut feed EC by 0.3–0.5 in early flower</b> until substrate temp comes down. You won't get the EC ramp anyway with degraded uptake; lower feed reduces the salt stack at the probe.</li>
+        <li><b>Audit zone 72544 (F13)</b> physically. 80.9°F is either a localized heat source (duct, light, slab against wall) or a probe placement issue. Cheapest fix in the facility.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="lbl">Structural fixes (multi-week)</div>
+      <ul class="tight">
+        <li><b>HVAC capacity audit</b> — is the dehumid / cooling stack sized for current simultaneous-flower-room count? The hot-room cluster grows when more rooms are in flower.</li>
+        <li><b>Return air balancing</b> in the hot rooms. F6 has been hot for 30+ days; either it always was or something shifted.</li>
+        <li><b>Substrate-side cooling</b> — chilled water, slab-cooling, or just isolating drippers from radiant heat. Most labs ignore this; for a facility your size it pays back.</li>
+        <li><b>Crop schedule sequencing</b> — if HVAC is the limit, splitting flips so 6 rooms are in Week 1–2 simultaneously (current state) becomes 3 rooms.</li>
+        <li><b>The 4/20 dehumidification CapEx</b> conversation is the pre-existing trail on this. Worth pulling that quote back up against today's data.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section id="rooms"><h2>Room-by-room (full-window detail)</h2>
+<p class="small">Phase target legend: <span class="pill ok">in</span> in-band · <span class="pill warn">near</span> within 15% of band edge · <span class="pill bad">out</span> outside band. Targets adapt to the room's actual day-in-cycle and AROYA SPA phase tag.</p>
+<div class="room-card crit">
+<div class="stripe-crit"></div>
+<h3>Flower 2 <span class="pill crit">CRITICAL</span> <span class="pill info">Week 8 Generative · D55</span> <span class="pill olive">1764 plants</span></h3>
+<div class="meta">F 2 3/12-5/11 · flip 2026-03-04 · expected harvest 2026-05-03 · phase target band: <b>Ripening</b></div>
+<div class="verdict-grad-crit"><b>Read:</b> pore EC zone max 12.1 dS/m (severe stack)</div>
+<div class="metric-grid">
+<div class="metric bad"><div class="lbl">Air day</div><div class="val">74.8°F</div><div class="target">target 63–70°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">75.2°F</div><div class="target">target 60–70°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">70.3°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">71.4°F</div><div class="target">target 0–77°F</div></div><div class="metric warn"><div class="lbl">VPD day</div><div class="val">1.3</div><div class="target">target 1–1.3</div></div><div class="metric ok"><div class="lbl">VPD night</div><div class="val">1.4</div><div class="target">target 1.1–1.4</div></div><div class="metric warn"><div class="lbl">RH day</div><div class="val">56%</div><div class="target">target 40–55%</div></div><div class="metric warn"><div class="lbl">CO₂ day</div><div class="val">1020</div><div class="target">target 800–1000</div></div><div class="metric ok"><div class="lbl">VWC mean</div><div class="val">50.4%</div><div class="target">target 45–55%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">7.0</div><div class="target">target 7–9</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">13.0%</div><div class="target">target 30–45%</div></div><div class="metric ok"><div class="lbl">Avg shots/d</div><div class="val">2.0</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17759"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72469=12.05 · z72495=11.28 · z72496=9.36 dS/m  <b>Substrate temp hot zones:</b> z72498=74.2°F · z72468=72.2°F · z72496=71.7°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 3 <span class="pill warn">WATCH</span> <span class="pill info">Bulking/Vegetative 2 · D28</span> <span class="pill olive">1836 plants</span></h3>
+<div class="meta">F 3 3/31-5/30 · flip 2026-03-31 · expected harvest 2026-05-30 · phase target band: <b>Mid flower / Bulking</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> substrate zone max 75.5°F (uptake degrading)</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">79.5°F</div><div class="target">target 75–80°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">79.4°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">73.6°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">75.5°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.4</div><div class="target">target 1–1.2</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.4</div><div class="target">target 0.8–1.2</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">59%</div><div class="target">target 55–65%</div></div><div class="metric ok"><div class="lbl">CO₂ day</div><div class="val">1364</div><div class="target">target 1200–1500</div></div><div class="metric warn"><div class="lbl">VWC mean</div><div class="val">48.4%</div><div class="target">target 50–65%</div></div><div class="metric bad"><div class="lbl">Pore EC</div><div class="val">5.2</div><div class="target">target 6–8</div></div><div class="metric warn"><div class="lbl">Avg dryback</div><div class="val">14.3%</div><div class="target">target 15–30%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">1.5</div><div class="target">target 6–10</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17760"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72500=7.94 · z72499=6.70 · z72501=6.62 dS/m  <b>Substrate temp hot zones:</b> z72499=77.1°F · z72501=76.7°F · z72470=76.1°F</div>
+</div>
+<div class="room-card ok">
+<div class="stripe-ok"></div>
+<h3>Flower 4 <span class="pill ok">OK</span> <span class="pill info">Bulking/Vegetative 2 · D40</span> <span class="pill olive">1836 plants</span></h3>
+<div class="meta">F 4 3/19-5/18 · flip 2026-03-19 · expected harvest 2026-05-18 · phase target band: <b>Mid flower / Bulking</b></div>
+<div class="verdict-grad-ok"><b>Read:</b> all key metrics inside phase band — no action needed.</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">77.4°F</div><div class="target">target 75–80°F</div></div><div class="metric warn"><div class="lbl">Air night</div><div class="val">76.3°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">73.4°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">74.5°F</div><div class="target">target 0–77°F</div></div><div class="metric ok"><div class="lbl">VPD day</div><div class="val">1.1</div><div class="target">target 1–1.2</div></div><div class="metric ok"><div class="lbl">VPD night</div><div class="val">1.0</div><div class="target">target 0.8–1.2</div></div><div class="metric warn"><div class="lbl">RH day</div><div class="val">66%</div><div class="target">target 55–65%</div></div><div class="metric warn"><div class="lbl">CO₂ day</div><div class="val">1540</div><div class="target">target 1200–1500</div></div><div class="metric bad"><div class="lbl">VWC mean</div><div class="val">47.2%</div><div class="target">target 50–65%</div></div><div class="metric bad"><div class="lbl">Pore EC</div><div class="val">5.3</div><div class="target">target 6–8</div></div><div class="metric ok"><div class="lbl">Avg dryback</div><div class="val">15.9%</div><div class="target">target 15–30%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">2.0</div><div class="target">target 6–10</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17761"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72503=8.18 · z72472=7.67 · z72473=7.21 dS/m  <b>Substrate temp hot zones:</b> z72473=75.7°F · z72503=75.7°F · z72506=75.4°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 5 <span class="pill warn">WATCH</span> <span class="pill info">Ripening/Generative 2 · D54</span> <span class="pill olive">1744 plants</span></h3>
+<div class="meta">F 5 3/5-5/4 · flip 2026-03-05 · expected harvest 2026-05-04 · phase target band: <b>Ripening</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> pore EC zone max 9.9 dS/m</div>
+<div class="metric-grid">
+<div class="metric bad"><div class="lbl">Air day</div><div class="val">75.4°F</div><div class="target">target 63–70°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">74.1°F</div><div class="target">target 60–70°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">70.5°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">71.6°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.4</div><div class="target">target 1–1.3</div></div><div class="metric ok"><div class="lbl">VPD night</div><div class="val">1.1</div><div class="target">target 1.1–1.4</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">55%</div><div class="target">target 40–55%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1682</div><div class="target">target 800–1000</div></div><div class="metric ok"><div class="lbl">VWC mean</div><div class="val">53.9%</div><div class="target">target 45–55%</div></div><div class="metric bad"><div class="lbl">Pore EC</div><div class="val">6.1</div><div class="target">target 7–9</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">15.9%</div><div class="target">target 30–45%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">0.5</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17762"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72510=9.92 · z72509=8.83 · z72475=7.09 dS/m  <b>Substrate temp hot zones:</b> z72474=72.6°F · z72510=72.5°F · z72508=71.9°F</div>
+</div>
+<div class="room-card crit">
+<div class="stripe-crit"></div>
+<h3>Flower 6 <span class="pill crit">CRITICAL</span> <span class="pill info">Bulking/Vegetative 2 · D39</span> <span class="pill olive">2064 plants</span></h3>
+<div class="meta">F 6 3/20-5/19 · flip 2026-03-20 · expected harvest 2026-05-19 · phase target band: <b>Mid flower / Bulking</b></div>
+<div class="verdict-grad-crit"><b>Read:</b> 4/20 escalation unresolved (chronic) · substrate zone max 76.6°F (uptake degrading) · air 81.3°F day · VPD day 1.66 kPa</div>
+<div class="metric-grid">
+<div class="metric bad"><div class="lbl">Air day</div><div class="val">81.3°F</div><div class="target">target 75–80°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">79.8°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">74.8°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">76.6°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.7</div><div class="target">target 1–1.2</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.5</div><div class="target">target 0.8–1.2</div></div><div class="metric warn"><div class="lbl">RH day</div><div class="val">55%</div><div class="target">target 55–65%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1688</div><div class="target">target 1200–1500</div></div><div class="metric ok"><div class="lbl">VWC mean</div><div class="val">50.6%</div><div class="target">target 50–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">6.3</div><div class="target">target 6–8</div></div><div class="metric ok"><div class="lbl">Avg dryback</div><div class="val">16.2%</div><div class="target">target 15–30%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">1.5</div><div class="target">target 6–10</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17763"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72514=8.95 · z72476=8.44 · z72477=8.13 dS/m  <b>Substrate temp hot zones:</b> z72513=78.1°F · z72476=77.8°F · z72514=77.7°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 7 <span class="pill warn">WATCH</span> <span class="pill info">Week 6 Generative · D42</span> <span class="pill olive">1650 plants</span></h3>
+<div class="meta">F 7 3/17-5/16 · flip 2026-03-17 · expected harvest 2026-05-16 · phase target band: <b>Late flower</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> substrate zone max 76.0°F (uptake degrading) · air 80.4°F day · VPD day 1.53 kPa</div>
+<div class="metric-grid">
+<div class="metric bad"><div class="lbl">Air day</div><div class="val">80.4°F</div><div class="target">target 68–75°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">80.2°F</div><div class="target">target 60–72°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">74.8°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">76.0°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.5</div><div class="target">target 0.9–1.3</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.5</div><div class="target">target 1.1–1.4</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">57%</div><div class="target">target 45–60%</div></div><div class="metric ok"><div class="lbl">CO₂ day</div><div class="val">1464</div><div class="target">target 1200–1500</div></div><div class="metric ok"><div class="lbl">VWC mean</div><div class="val">51.0%</div><div class="target">target 50–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">6.5</div><div class="target">target 6–7</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">13.1%</div><div class="target">target 20–35%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">1.5</div><div class="target">target 3–6</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17764"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72479=8.33 · z72515=8.20 · z72478=8.04 dS/m  <b>Substrate temp hot zones:</b> z72516=77.1°F · z72479=76.6°F · z72478=76.4°F</div>
+</div>
+<div class="room-card crit">
+<div class="stripe-crit"></div>
+<h3>Flower 8 <span class="pill crit">CRITICAL</span> <span class="pill info">Week 1 Generative · D7</span> <span class="pill olive">1630 plants</span></h3>
+<div class="meta">F 8 4/21-6/20 · flip 2026-04-21 · expected harvest 2026-06-20 · phase target band: <b>Early flower / Generative</b></div>
+<div class="verdict-grad-crit"><b>Read:</b> substrate zone max 78.5°F (past 77°F red line) · substrate avg 77.4°F · air 82.2°F day</div>
+<div class="metric-grid">
+<div class="metric warn"><div class="lbl">Air day</div><div class="val">82.2°F</div><div class="target">target 78–82°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">82.4°F</div><div class="target">target 65–75°F</div></div><div class="metric bad"><div class="lbl">Sub temp avg</div><div class="val">77.4°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp max</div><div class="val">78.5°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.4</div><div class="target">target 0.7–1</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.4</div><div class="target">target 0.8–1.1</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">63%</div><div class="target">target 60–72%</div></div><div class="metric ok"><div class="lbl">CO₂ day</div><div class="val">1173</div><div class="target">target 1000–1200</div></div><div class="metric bad"><div class="lbl">VWC mean</div><div class="val">37.7%</div><div class="target">target 45–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">3.8</div><div class="target">target 3–8</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">12.3%</div><div class="target">target 25–40%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">1.5</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17765"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72521=5.57 · z72520=4.81 · z72481=4.64 dS/m  <b>Substrate temp hot zones:</b> z72481=79.8°F · z72521=79.6°F · z72519=79.0°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 9 <span class="pill warn">WATCH</span> <span class="pill info">Bulking/Vegetative 2 · D40</span> <span class="pill olive">1272 plants</span></h3>
+<div class="meta">F 9 3/19-5/18 · flip 2026-03-19 · expected harvest 2026-05-18 · phase target band: <b>Mid flower / Bulking</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> pore EC zone max 10.1 dS/m</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">76.3°F</div><div class="target">target 75–80°F</div></div><div class="metric warn"><div class="lbl">Air night</div><div class="val">76.2°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">71.8°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">73.7°F</div><div class="target">target 0–77°F</div></div><div class="metric ok"><div class="lbl">VPD day</div><div class="val">1.2</div><div class="target">target 1–1.2</div></div><div class="metric warn"><div class="lbl">VPD night</div><div class="val">1.2</div><div class="target">target 0.8–1.2</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">62%</div><div class="target">target 55–65%</div></div><div class="metric warn"><div class="lbl">CO₂ day</div><div class="val">1164</div><div class="target">target 1200–1500</div></div><div class="metric warn"><div class="lbl">VWC mean</div><div class="val">48.2%</div><div class="target">target 50–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">7.3</div><div class="target">target 6–8</div></div><div class="metric ok"><div class="lbl">Avg dryback</div><div class="val">18.9%</div><div class="target">target 15–30%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">2.0</div><div class="target">target 6–10</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17766"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72525=10.09 · z72526=9.55 · z72482=8.34 dS/m  <b>Substrate temp hot zones:</b> z72526=75.3°F · z72527=74.7°F · z72525=74.3°F</div>
+</div>
+<div class="room-card crit">
+<div class="stripe-crit"></div>
+<h3>Flower 10 <span class="pill crit">CRITICAL</span> <span class="pill info">Week 2 Generative · D19</span> <span class="pill olive">1650 plants</span></h3>
+<div class="meta">F 10 4/9-6/8 · flip 2026-04-09 · expected harvest 2026-06-08 · phase target band: <b>Early flower / Generative</b></div>
+<div class="verdict-grad-crit"><b>Read:</b> substrate zone max 78.1°F (past 77°F red line) · substrate avg 75.8°F (uptake degrading) · air 80.2°F day · VPD day 1.52 kPa</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">80.2°F</div><div class="target">target 78–82°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">79.2°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp avg</div><div class="val">75.8°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp max</div><div class="val">78.1°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.5</div><div class="target">target 0.7–1</div></div><div class="metric warn"><div class="lbl">VPD night</div><div class="val">1.1</div><div class="target">target 0.8–1.1</div></div><div class="metric bad"><div class="lbl">RH day</div><div class="val">57%</div><div class="target">target 60–72%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1583</div><div class="target">target 1000–1200</div></div><div class="metric bad"><div class="lbl">VWC mean</div><div class="val">40.8%</div><div class="target">target 45–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">5.7</div><div class="target">target 3–8</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">16.7%</div><div class="target">target 25–40%</div></div><div class="metric ok"><div class="lbl">Avg shots/d</div><div class="val">2.5</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17767"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72532=8.34 · z72531=7.70 · z72529=6.81 dS/m  <b>Substrate temp hot zones:</b> z72529=79.3°F · z72483=78.4°F · z72528=78.3°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 11 <span class="pill warn">WATCH</span> <span class="pill info">Bulking/Vegetative 2 · D21</span> <span class="pill olive">1650 plants</span></h3>
+<div class="meta">F 11 4/7-6/6 · flip 2026-04-07 · expected harvest 2026-06-06 · phase target band: <b>Early flower / Generative</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> substrate zone max 75.8°F (uptake degrading) · substrate avg 75.1°F (uptake degrading)</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">79.5°F</div><div class="target">target 78–82°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">80.0°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp avg</div><div class="val">75.1°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">75.8°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.3</div><div class="target">target 0.7–1</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.5</div><div class="target">target 0.8–1.1</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">62%</div><div class="target">target 60–72%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1589</div><div class="target">target 1000–1200</div></div><div class="metric warn"><div class="lbl">VWC mean</div><div class="val">44.2%</div><div class="target">target 45–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">5.5</div><div class="target">target 3–8</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">16.1%</div><div class="target">target 25–40%</div></div><div class="metric ok"><div class="lbl">Avg shots/d</div><div class="val">2.0</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17768"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72533=8.10 · z72484=7.69 · z72537=7.43 dS/m  <b>Substrate temp hot zones:</b> z72534=76.4°F · z72535=76.4°F · z72484=76.3°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 12 <span class="pill warn">WATCH</span> <span class="pill info">Ripening/Generative 2 · D49</span> <span class="pill olive">1272 plants</span></h3>
+<div class="meta">F 12 3/12-5/11 · flip 2026-03-10 · expected harvest 2026-05-09 · phase target band: <b>Late flower</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> pore EC zone max 10.2 dS/m</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">74.0°F</div><div class="target">target 68–75°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">75.7°F</div><div class="target">target 60–72°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">70.6°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">70.9°F</div><div class="target">target 0–77°F</div></div><div class="metric ok"><div class="lbl">VPD day</div><div class="val">1.2</div><div class="target">target 0.9–1.3</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.6</div><div class="target">target 1.1–1.4</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">59%</div><div class="target">target 45–60%</div></div><div class="metric ok"><div class="lbl">CO₂ day</div><div class="val">1488</div><div class="target">target 1200–1500</div></div><div class="metric ok"><div class="lbl">VWC mean</div><div class="val">50.4%</div><div class="target">target 50–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">6.7</div><div class="target">target 6–7</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">17.4%</div><div class="target">target 20–35%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">2.0</div><div class="target">target 3–6</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17769"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72538=10.17 · z72540=9.39 · z72539=8.73 dS/m  <b>Substrate temp hot zones:</b> z72539=72.2°F · z72538=72.1°F · z72541=71.7°F</div>
+</div>
+<div class="room-card crit">
+<div class="stripe-crit"></div>
+<h3>Flower 13 <span class="pill crit">CRITICAL</span> <span class="pill info">Week 1 Generative · D12</span> <span class="pill olive">1800 plants</span></h3>
+<div class="meta">F 13 4/16-6/15 · flip 2026-04-16 · expected harvest 2026-06-15 · phase target band: <b>Early flower / Generative</b></div>
+<div class="verdict-grad-crit"><b>Read:</b> substrate zone max 79.0°F (past 77°F red line)</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">79.2°F</div><div class="target">target 78–82°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">79.8°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">75.0°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp max</div><div class="val">79.0°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.5</div><div class="target">target 0.7–1</div></div><div class="metric ok"><div class="lbl">VPD night</div><div class="val">0.9</div><div class="target">target 0.8–1.1</div></div><div class="metric bad"><div class="lbl">RH day</div><div class="val">57%</div><div class="target">target 60–72%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1377</div><div class="target">target 1000–1200</div></div><div class="metric warn"><div class="lbl">VWC mean</div><div class="val">44.0%</div><div class="target">target 45–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">3.6</div><div class="target">target 3–8</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">10.4%</div><div class="target">target 25–40%</div></div><div class="metric ok"><div class="lbl">Avg shots/d</div><div class="val">2.0</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17770"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72486=7.95 · z72544=6.35 · z72545=4.46 dS/m  <b>Substrate temp hot zones:</b> z72544=80.9°F · z72543=80.6°F · z72546=79.2°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 14 <span class="pill warn">WATCH</span> <span class="pill info">Week 6 Generative · D47</span> <span class="pill olive">1496 plants</span></h3>
+<div class="meta">F 14 3/12-5/11 · flip 2026-03-12 · expected harvest 2026-05-11 · phase target band: <b>Late flower</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> pore EC zone max 10.3 dS/m</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">74.6°F</div><div class="target">target 68–75°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">75.0°F</div><div class="target">target 60–72°F</div></div><div class="metric ok"><div class="lbl">Sub temp avg</div><div class="val">70.7°F</div><div class="target">target 65–75°F</div></div><div class="metric ok"><div class="lbl">Sub temp max</div><div class="val">71.4°F</div><div class="target">target 0–77°F</div></div><div class="metric ok"><div class="lbl">VPD day</div><div class="val">1.2</div><div class="target">target 0.9–1.3</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">0.9</div><div class="target">target 1.1–1.4</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">58%</div><div class="target">target 45–60%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1650</div><div class="target">target 1200–1500</div></div><div class="metric ok"><div class="lbl">VWC mean</div><div class="val">50.0%</div><div class="target">target 50–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">6.1</div><div class="target">target 6–7</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">15.5%</div><div class="target">target 20–35%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">1.0</div><div class="target">target 3–6</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17771"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72552=10.32 · z72551=8.99 · z72549=8.19 dS/m  <b>Substrate temp hot zones:</b> z72548=72.9°F · z72552=72.3°F · z72487=72.3°F</div>
+</div>
+<div class="room-card crit">
+<div class="stripe-crit"></div>
+<h3>Flower 16 <span class="pill crit">CRITICAL</span> <span class="pill info">Week 2 Generative · D14</span> <span class="pill olive">1836 plants</span></h3>
+<div class="meta">F 16 4/14-6/13 · flip 2026-04-14 · expected harvest 2026-06-13 · phase target band: <b>Early flower / Generative</b></div>
+<div class="verdict-grad-crit"><b>Read:</b> substrate zone max 78.2°F (past 77°F red line) · substrate avg 76.8°F (uptake degrading) · air 81.6°F day</div>
+<div class="metric-grid">
+<div class="metric ok"><div class="lbl">Air day</div><div class="val">81.6°F</div><div class="target">target 78–82°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">81.7°F</div><div class="target">target 65–75°F</div></div><div class="metric bad"><div class="lbl">Sub temp avg</div><div class="val">76.8°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp max</div><div class="val">78.2°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.4</div><div class="target">target 0.7–1</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.4</div><div class="target">target 0.8–1.1</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">62%</div><div class="target">target 60–72%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1552</div><div class="target">target 1000–1200</div></div><div class="metric warn"><div class="lbl">VWC mean</div><div class="val">42.3%</div><div class="target">target 45–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">4.7</div><div class="target">target 3–8</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">18.1%</div><div class="target">target 25–40%</div></div><div class="metric ok"><div class="lbl">Avg shots/d</div><div class="val">2.5</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17772"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72557=7.06 · z72553=6.72 · z72555=6.00 dS/m  <b>Substrate temp hot zones:</b> z72554=79.9°F · z72488=79.6°F · z72553=78.7°F</div>
+</div>
+<div class="room-card crit">
+<div class="stripe-crit"></div>
+<h3>Flower 17 <span class="pill crit">CRITICAL</span> <span class="pill info">Week 1 Generative · D5</span> <span class="pill olive">1178 plants</span></h3>
+<div class="meta">F 17 4/23-6/22 · flip 2026-04-23 · expected harvest 2026-06-22 · phase target band: <b>Early flower / Generative</b></div>
+<div class="verdict-grad-crit"><b>Read:</b> substrate zone max 78.8°F (past 77°F red line) · substrate avg 77.6°F · air 82.5°F day · VPD day 1.63 kPa</div>
+<div class="metric-grid">
+<div class="metric warn"><div class="lbl">Air day</div><div class="val">82.5°F</div><div class="target">target 78–82°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">83.3°F</div><div class="target">target 65–75°F</div></div><div class="metric bad"><div class="lbl">Sub temp avg</div><div class="val">77.6°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp max</div><div class="val">78.8°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.6</div><div class="target">target 0.7–1</div></div><div class="metric bad"><div class="lbl">VPD night</div><div class="val">1.6</div><div class="target">target 0.8–1.1</div></div><div class="metric bad"><div class="lbl">RH day</div><div class="val">57%</div><div class="target">target 60–72%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1321</div><div class="target">target 1000–1200</div></div><div class="metric bad"><div class="lbl">VWC mean</div><div class="val">38.9%</div><div class="target">target 45–65%</div></div><div class="metric warn"><div class="lbl">Pore EC</div><div class="val">2.9</div><div class="target">target 3–8</div></div><div class="metric bad"><div class="lbl">Avg dryback</div><div class="val">13.4%</div><div class="target">target 25–40%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">1.0</div><div class="target">target 2–5</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17773"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72648=4.06 · z72644=3.87 · z72647=3.78 dS/m  <b>Substrate temp hot zones:</b> z72644=79.9°F · z72645=79.5°F · z72646=79.4°F</div>
+</div>
+<div class="room-card warn">
+<div class="stripe-warn"></div>
+<h3>Flower 18 <span class="pill warn">WATCH</span> <span class="pill info">Bulking/Vegetative 2 · D26</span> <span class="pill olive">1488 plants</span></h3>
+<div class="meta">F 18 4/2-6/1 · flip 2026-04-02 · expected harvest 2026-06-01 · phase target band: <b>Mid flower / Bulking</b></div>
+<div class="verdict-grad-warn"><b>Read:</b> substrate zone max 77.6°F (uptake degrading) · substrate avg 75.9°F (uptake degrading) · air 80.6°F day · pore EC zone max 9.4 dS/m</div>
+<div class="metric-grid">
+<div class="metric warn"><div class="lbl">Air day</div><div class="val">80.6°F</div><div class="target">target 75–80°F</div></div><div class="metric bad"><div class="lbl">Air night</div><div class="val">79.7°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp avg</div><div class="val">75.9°F</div><div class="target">target 65–75°F</div></div><div class="metric warn"><div class="lbl">Sub temp max</div><div class="val">77.6°F</div><div class="target">target 0–77°F</div></div><div class="metric bad"><div class="lbl">VPD day</div><div class="val">1.4</div><div class="target">target 1–1.2</div></div><div class="metric warn"><div class="lbl">VPD night</div><div class="val">1.2</div><div class="target">target 0.8–1.2</div></div><div class="metric ok"><div class="lbl">RH day</div><div class="val">62%</div><div class="target">target 55–65%</div></div><div class="metric bad"><div class="lbl">CO₂ day</div><div class="val">1596</div><div class="target">target 1200–1500</div></div><div class="metric warn"><div class="lbl">VWC mean</div><div class="val">48.2%</div><div class="target">target 50–65%</div></div><div class="metric ok"><div class="lbl">Pore EC</div><div class="val">6.0</div><div class="target">target 6–8</div></div><div class="metric ok"><div class="lbl">Avg dryback</div><div class="val">16.0%</div><div class="target">target 15–30%</div></div><div class="metric bad"><div class="lbl">Avg shots/d</div><div class="val">1.5</div><div class="target">target 6–10</div></div></div>
+<div class="chart-wrap"><canvas id="chart-17774"></canvas></div>
+<div class="small" style="margin-top:6px"><b>Pore EC hot zones:</b> z72651=9.38 · z72650=8.68 · z72490=7.32 dS/m  <b>Substrate temp hot zones:</b> z72650=78.6°F · z72653=78.4°F · z72651=78.3°F</div>
+</div>
+</section>
+
+<section id="carryover">
+  <h2>Carry-overs from prior sessions</h2>
+  <p class="small">Re-checked against current data where possible. Items not in the sensor data still carried for the meeting.</p>
+  <ul class="tight">
+    <li><b>Argus / BMS vs AROYA temperature mismatch (4/20)</b> — <span class="pill crit">RECONFIRMED</span>. The fact that F6 has not cooled in 14 days, and that every newly-flipped room runs 80–82°F, suggests AROYA and the BMS are reading different setpoints. <b>This is the highest-leverage diagnostic action this week.</b></li>
+    <li><b>Dehumidification CapEx (4/20)</b> — <span class="pill warn">STILL APPLICABLE</span>. The hot-room cluster expanding as more rooms enter early flower simultaneously is exactly what a HVAC capacity bottleneck looks like.</li>
+    <li><b>Strawberry Glue / McGilligoo foxtailing</b> — <span class="pill empty">UNVERIFIED</span>. We don't have cultivar→room mapping in this pull. Worth asking which of F11 (D21) and F14 (D47, EC z72552=10.32) are running those genetics. F2 D55 EC z72469=12.05 is also a phase that foxtailing would show in.</li>
+    <li><b>1-gal pot dryback behavior</b> — <span class="pill warn">PARTIAL READ</span>. F8 D7 dryback 12.3%, F13 D12 dryback 10.4%, F17 D5 dryback 13.4% — early flower drybacks are <b>shallow</b>, but these are also new flips with low canopy water demand. Will be more diagnostic at D14+. F9's 18.9% dryback (post-pivot) shows what a healthy bulking dryback looks like for context.</li>
+    <li><b>Generative pivot in F9 (4/20 recommendation)</b> — <span class="pill ok">LANDED</span>. VWC dropped 60.8 → 48.2, dryback opened to 18.9% (best in facility), EC ramped 6.39 → 7.3. The 4/20 plan worked. Hot-spot zone z72525 is still hot at 10.09 — physical inspection still warranted, but room-level steering is on.</li>
+    <li><b>F12 ripening EC drift (4/20)</b> — <span class="pill warn">CONTINUING</span>. z72540 was 10.78; today z72538 = 10.17, z72540 = 9.39. Ripening progressed without an explicit flush. With harvest 5/9 at D49 currently, the drift will end on its own — but watch for tip burn / early senescence in the high-EC zones.</li>
+    <li><b>Flower 6 escalation (4/20 acute)</b> — <span class="pill crit">UNRESOLVED</span>. See hot-room cluster section.</li>
+    <li><b>Plastic pots / 1.5-gal trial / reduced plant count / two drippers / stronger plenum fans / 2°F night drop / 20–25% dryback on Strawberry Glue</b> — <span class="pill empty">STATUS UNKNOWN</span>. Carrying these forward; please correct anything resolved or superseded.</li>
+  </ul>
+</section>
+
+<section id="methods">
+  <h2>Methods &amp; caveats</h2>
+  <div class="two-col">
+    <div>
+      <h3>Data sources</h3>
+      <ul class="tight">
+        <li>AROYA MCP — <code>list_rooms</code> (facility 4537), <code>spa_list_harvest_groups</code> (active HG metadata: flip, harvest, phase, day-in-cycle, plant count), <code>get_facility_overview</code> (24h baseline), <code>get_room_history</code> (14-day per-zone hourly bins, 16 flower rooms × ~41 series per room).</li>
+        <li>14 days of 1h-binned mean/min/max for soil_moist, soil_temp, pore_ec, air_temp, vpd, rel_hum, co2, abs_hum.</li>
+        <li>Comparison baseline: 2026-04-20 client report (24h facility-overview averages from 2026-04-20).</li>
+      </ul>
+
+      <h3>Photoperiod assumption</h3>
+      <p class="small">Lights-on 06:00 PDT (13:00 UTC) → lights-off 18:00 PDT (01:00 UTC). Day = UTC hours {13–23, 0}, night = UTC hours {2–11}. Transition hours 12 and 1 excluded. <b>Verify against actual schedule</b> — if Vangarden runs a different photoperiod, day/night splits in this report shift accordingly.</p>
+    </div>
+    <div>
+      <h3>What this report does NOT contain</h3>
+      <ul class="tight">
+        <li><b>Cultivar → room mapping</b>. spa_list_harvest_groups returned cultivar IDs but not names in this pull. Strawberry Glue / McGilligoo follow-through is gated on this.</li>
+        <li><b>Per-device battery / RSSI / gap statistics</b> — not pulled in this run; the prior 4/20 device fleet inventory (623 devices) still applies barring fleet changes. Worth a follow-up off-hours run.</li>
+        <li><b>Yield context for finishing rooms</b>. F2 / F5 / F12 are within days of harvest; their dry weights vs targets aren't in scope here.</li>
+        <li><b>Drip / drain EC differential</b>. dfi / dfi_drain / pore_ec_drip / pore_ec_drain are the diagnostic for whether the facility's EC stack is feed-side, runoff-side, or substrate-side. Not pulled this session.</li>
+      </ul>
+
+      <h3>Phase-target sources</h3>
+      <p class="small">AROYA crop-steering target table (LED cultivation). Early flower (Wk1–3): VPD 0.7–1.0 day, dryback 25–40%, EC 3–8 ramping. Mid bulking (Wk4–5): VPD 1.0–1.2, dryback 15–30%, EC 6–8. Late flower (Wk6–7): VPD 0.9–1.3, dryback 20–35%, EC 6–7. Ripening (Wk8–9): VPD 1.0–1.3, dryback 30–45%, EC 7–9. Substrate temp 65–75°F all phases (75°F threshold, 77°F red line).</p>
+    </div>
+  </div>
+</section>
+
+<p class="small" style="margin-top:40px">
+  Generated 2026-04-28 · Vangarden facility 4537 · 14-day window · 16 active flower runs · Phase-aware scoring against AROYA LED targets · See "What changed" section for follow-through against the 2026-04-20 client report.
+</p>
+
+</main>
+<script>
+Chart.defaults.color = "#5b6a7d";
+Chart.defaults.borderColor = "#d9e0ec";
+Chart.defaults.font.family = '-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+new Chart(document.getElementById("chart-17759").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [50.37, 51.41], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [70.27, 70.31], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [74.97, 75.25], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.34, 1.46], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17760").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [48.54, 45.84], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [73.55, 73.78], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [79.54, 78.26], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.42, 1.27], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17761").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [47.78, 32.5], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [73.38, 74.48], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [76.97, 76.36], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.05, 0.99], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17762").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [54.21, 45.73], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [70.51, 70.85], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [74.9, 74.17], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.27, 1.1], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17763").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [51.08, 38.09], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [74.71, 76.56], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [80.44, 85.86], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.56, 2.0], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17764").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [51.18, 47.35], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [74.77, 74.79], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [80.24, 79.4], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.51, 1.43], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17765").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [38.02, 30.23], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [77.37, 78.47], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [82.2, 83.13], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.41, 1.41], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17766").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [48.28, 47.37], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [71.85, 71.93], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [76.38, 74.88], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.21, 1.07], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17767").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [41.26, 29.75], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [75.73, 78.13], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [79.69, 82.8], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.35, 1.52], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17768").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [44.15, 44.5], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [75.09, 74.81], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [79.72, 79.19], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.39, 1.42], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17769").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [50.36, 51.3], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [70.56, 70.62], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [74.67, 75.74], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.35, 1.53], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17770").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [44.25, 37.19], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [74.85, 77.91], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [79.31, 83.72], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.24, 1.61], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17771").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [50.1, 47.9], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [70.73, 70.8], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [74.76, 75.96], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.1, 1.1], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17772").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [42.18, 44.37], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [76.86, 76.49], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [81.63, 81.71], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.42, 1.37], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17773").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [38.64, 45.36], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [77.63, 77.29], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [82.79, 83.36], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.63, 1.69], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+new Chart(document.getElementById("chart-17774").getContext("2d"), {
+  type: "line",
+  data: { labels: ["2026-04-28", "2026-04-29"],
+    datasets: [
+      { label: "VWC %", data: [48.69, 35.67], yAxisID: "y", borderColor:"#5ea9ff", backgroundColor:"rgba(94,169,255,.08)", tension:.25, pointRadius:2 },
+      { label: "Sub temp °F", data: [75.91, 76.36], yAxisID: "y2", borderColor:"#ff6b6b", backgroundColor:"rgba(255,107,107,.08)", tension:.25, pointRadius:2 },
+      { label: "Air temp °F", data: [80.18, 79.72], yAxisID: "y2", borderColor:"#f6c85f", backgroundColor:"rgba(246,200,95,.06)", tension:.25, pointRadius:2, borderDash:[4,3] },
+      { label: "VPD kPa", data: [1.32, 1.15], yAxisID: "y3", borderColor:"#c7ea6b", backgroundColor:"rgba(199,234,107,.08)", tension:.25, pointRadius:2, borderDash:[2,2] }
+    ] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: "#e1e6ef" } },
+      y:  { type: "linear", position: "left", title: { display:true, text:"VWC %" }, suggestedMin: 0, suggestedMax: 70, grid: { color: "#e1e6ef" } },
+      y2: { type: "linear", position: "right", title: { display:true, text:"Temp °F" }, suggestedMin: 60, suggestedMax: 85, grid: { display: false } },
+      y3: { type: "linear", position: "right", display: false, suggestedMin: 0, suggestedMax: 2.5 }
+    }
+  }
+});
+</script>
+</body>
+</html>
